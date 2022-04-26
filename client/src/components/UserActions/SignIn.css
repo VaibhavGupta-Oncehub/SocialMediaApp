@@ -1,0 +1,101 @@
+* {
+    padding: 0px;
+    margin: 0px;
+}
+body {
+    background-color: rgba(0, 172, 238, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.box {
+    height: 400px;
+    width : 690px;
+    background: white;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.4);
+    position: absolute;
+}
+.box::before {
+    content: "";
+    width: 270px;
+    height: 100%;
+    background: #00acee;
+    position: absolute;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.4);
+}
+.bitwitter {
+    position: absolute;
+    font-size: 180px;
+    margin-top: 25px;
+    margin-left: 50px;
+    color: rgba( 255, 255, 255, 0.4);
+}
+.head {
+    font-family: 'poppins', sans-serif;
+    position: absolute;
+    color: white;
+}
+.head p {
+    margin-top: 280px;
+    margin-left: 29px;
+}
+.head button {
+    width: 200px;
+    height: 35px;
+    font-family: 'poppins', sans-serif;
+    background-color: transparent;
+    border: 1px solid white;
+    color: white;
+    border-radius: 30px;
+    margin-top: 20px;
+    margin-left: 30px;
+    transition : all 1s ease;
+}
+.head button:hover {
+    background-color: white;
+    border: none;
+    color: #00acee;
+}
+.content h2 {
+    font-family: 'poppins', sans-serif;
+    position: absolute;
+    margin-left: 300px;
+    margin-top: 40px;
+    font-size: 29px;
+}
+input {
+    position: absolute;
+    font-family: 'poppins', sans-serif;
+    width: 340px;
+    height: 30px;
+    border: 1px solid grey;
+    padding-left: 10px;
+    color: grey;
+}
+#inp1 {
+    margin-top: 200px;
+    margin-left: 300px;
+}
+#inp2 {
+    margin-top: 250px;
+    margin-left: 300px;
+}
+.content button {
+    position: absolute;
+    margin-top: 300px;
+    margin-left: 300px;
+    width: 150px;
+    height: 35px;
+    border: none;
+    border-radius: 30px;
+    background-color: #00acee;
+    font-family: 'poppins', sans-serif;
+    color: white;
+    transition: all 1s ease;
+}
+.content button:hover {
+    background: transparent;
+    border: 1px solid #00acee;
+    color: #00acee;
+}
