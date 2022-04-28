@@ -20,17 +20,12 @@ class SessionsController < ApplicationController
   end 
   
   def destroy
-    # puts("=========",current_user.authentication_token)
     if current_user==nil 
       render json: { error: true, message: 'no current User Login'}, status: 200 and return
-
     end
     current_user.invalidate_all_sessions!
-    # current_user.destroy
-    render json: { error: true, message: 'Please confirm your registered email to access your account.'},
-    status: 500 and return
-
-    # status: 202 and return
+    render json: { success: true, message: 'you are sucessfully log out '},
+    status: 200 and return
   end
 
 end

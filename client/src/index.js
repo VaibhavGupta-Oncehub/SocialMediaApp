@@ -12,16 +12,18 @@ import $ from 'jquery';
 import Popper from 'popper.js';
 import Header from "./components/Layout/Header";
 import Profile from "./components/UserActions/Profile";
+import { CookiesProvider } from "react-cookie";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
-  
+  <CookiesProvider>
     <Routes>
       <Route path="/" element={<App />} />
       <Route path="/signin" element={<SignIn />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/signup" element={<SignUp />} />
     </Routes>
+  </CookiesProvider>
   </BrowserRouter>
 );
 

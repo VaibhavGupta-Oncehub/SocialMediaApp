@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import Header from './components/Layout/Header'
 import Post from './components/Posts/Post';
+import { useState } from 'react';
 
 const DUMMY_POSTS = [
   {
@@ -26,6 +27,7 @@ const DUMMY_POSTS = [
   },
 ];
 function App() {
+  const [userData,setUserData]=useState({})
   const postlist = DUMMY_POSTS.map((post) => (
     <Post
       id={post.id}
@@ -36,7 +38,7 @@ function App() {
   ));
   return (
     <div>
-      <Header ></Header>
+      <Header userData={userData} setUserData={setUserData}></Header>
       <main>
         {postlist}
       </main>

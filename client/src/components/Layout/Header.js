@@ -1,9 +1,44 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import mealsImage from "../../assets/meals2.jpg";
 import classes from "./Header.module.css";
 import Button from "../UI/Button";
-
+import Cookies from "js-cookie";
+import axios from "axios";
 const Header = (props) => {
+  const [status, setStatus] = useState(true);
+  const [userData, setUserData] = useState({});
+  
+
+  const logoutHandler = () => {
+    localStorage.clear()
+    const userEmail=Cookies.get('userEmail')
+    const token=Cookies.get('authToken')
+    axios.delete("http://localhost:3000/users/sign_out", {
+      headers: {
+        "X-User-Token": token,
+        "X-User-Email": userEmail,
+      },
+    }).then(res=>{
+      Cookies.remove('userEmail')
+      Cookies.remove('authToken')
+      localStorage.removeItem('userdata')
+      setStatus(!status)
+    }).catch((err)=>{
+      setStatus(false)
+    })
+  };
+  useEffect(() => {
+    setUserData(localStorage.getItem("userData"));
+    if(userData==null)
+    {
+      setStatus(true);
+    }
+    if(userData!=null)
+    {
+      setStatus(false);
+    }
+  }, [status]);
+
   return (
     <Fragment>
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -24,16 +59,6 @@ const Header = (props) => {
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="#">
-                  Home
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">
-                  Link
-                </a>
-              </li>
               <li className="nav-item dropdown">
                 <a
                   className="nav-link dropdown-toggle"
@@ -51,26 +76,37 @@ const Header = (props) => {
                       profile
                     </a>
                   </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Another action
-                    </a>
-                  </li>
-                  <li>
-                    <hr className="dropdown-divider" />
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Something else here
-                    </a>
-                  </li>
                 </ul>
               </li>
             </ul>
+            {status ? (
+              <div className="d-flex">
+                <Button
+                  label="Login"
+                  className={classes.button}
+                  path="/signin"
+                ></Button>
+                <Button
+                  label="SignUp"
+                  className={classes.button}
+                  path="/SignUp"
+                ></Button>
+              </div>
+            ) : (
+              <button
+                className={classes.button}
+                onClick={() => {
+                  logoutHandler();
+                }}
+              >
+                Logout
+              </button>
+            )}
+            {/* <button onClick={()=>{
+              userStatusHandler()
+            }}> check data</button> */}
+
             <form className="d-flex">
-              <Button label="Login" path="/signin" ></Button>
-              <Button label="Logout" path="/logout"></Button>
-              <Button label="SignUp" path="/SignUp"></Button>
               <input
                 className="form-control me-2"
                 type="search"

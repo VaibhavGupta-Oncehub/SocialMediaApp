@@ -1,10 +1,9 @@
-import classes from "./Button.module.css";
 import { Link } from "react-router-dom";
 
 const Button = (props) => {
   return (
     <Link to={props.path} className="">
-      <button className={classes.button}>
+      <button className={props.className}>
         <span>{props.label}</span>
       </button>
     </Link>
