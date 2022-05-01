@@ -22,6 +22,7 @@ const Header = (props) => {
       Cookies.remove('userEmail')
       Cookies.remove('authToken')
       localStorage.removeItem('userdata')
+      localStorage.removeItem("userPostsData");
       setStatus(!status)
     }).catch((err)=>{
       setStatus(false)

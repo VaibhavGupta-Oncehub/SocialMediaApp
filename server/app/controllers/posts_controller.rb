@@ -1,4 +1,8 @@
 class PostsController < ApplicationController
+  include ErrorSerializer
+  # before_action :authenticate_user!
+
+
   before_action :set_post, only: [:show, :update, :destroy]
 
   # GET /posts
@@ -16,11 +20,11 @@ class PostsController < ApplicationController
   # POST /posts
   def create
     @post = Post.new(post_params)
-
+    puts(@post)
     if @post.save
-      render json: @post, status: :created, location: @post
+      render json: @post,status: :created, location: @post
     else
-      render json: @post.errors, status: :unprocessable_entity
+      render json: ErrorSerializer.serialize(@post.errors), status: :unprocessable_entity
     end
   end
 
@@ -29,13 +33,14 @@ class PostsController < ApplicationController
     if @post.update(post_params)
       render json: @post
     else
-      render json: @post.errors, status: :unprocessable_entity
+      render json: ErrorSerializer.serialize(@post.errors), status: :unprocessable_entity
     end
   end
 
   # DELETE /posts/1
   def destroy
     @post.destroy
+    render json: {success: true , message: 'Post was successfully destroyed'}
   end
 
   private
@@ -46,6 +51,6 @@ class PostsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def post_params
-      params.require(:post).permit(:title, :description, :image)
+      params.permit(:id,:title, :description,:user_id,:image) 
     end
 end

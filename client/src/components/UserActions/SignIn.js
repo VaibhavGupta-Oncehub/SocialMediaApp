@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import Cookies from "js-cookie";
 
+
 const SignIn = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,7 +19,7 @@ const SignIn = (props) => {
         console.log(res.data)
         Cookies.set('userEmail',res.data.email)
         Cookies.set('authToken',res.data.authentication_token)
-        localStorage.setItem('userData',  JSON.stringify(res.data));
+        localStorage.setItem('userData', JSON.stringify(res.data));
         navigate("/profile");
       })
       .catch((err) => {
@@ -26,8 +27,8 @@ const SignIn = (props) => {
       });
   };
   return (
-    <div class="card container my-5 ">
-      <h5 class="card-header">Sing In</h5>
+    <div className="card container my-5 ">
+      <h5 className="card-header">Sign In</h5>
       <div className="container">
         <form onSubmit={formhandler}>
           <div className="mb-3">

@@ -47,19 +47,19 @@ const SignUp = (props) => {
   }
   return (
     <div className="">
-      <div class="card container my-5 bg-info bg-opacity-25 ">
-        <h5 class="card-header bg-info d-flex justify-content-center text-white">Sing Up</h5>
+      <div className="card container my-5 bg-info bg-opacity-25 ">
+        <h5 className="card-header bg-info d-flex justify-content-center text-white">Sign Up</h5>
         <div className="container">
           <form onSubmit={formhandler}>
             <div className="mb-3 m-2">
-              <label htmlFor="exampleInputEmail1 " className="form-label text-dark">
+              <label htmlFor="exampleInputUser1 " className="form-label text-dark">
                 User Name
               </label>
               <input
                 type="text"
                 required
                 className="form-control"
-                id="exampleInputEmail1"
+                id="exampleInputUser1"
                 aria-describedby="emailHelp"
                 onChange={(e)=>setUserName(e.target.value)}
               />
@@ -77,7 +77,7 @@ const SignUp = (props) => {
                 onChange={(e)=>setEmail(e.target.value)}
 
               />
-              <div id="emailHelp" class="form-text ">
+              <div id="emailHelp" className="form-text ">
                 Please enter the Valid email it will verify for further steps !!
               </div>
             </div>
@@ -90,7 +90,7 @@ const SignUp = (props) => {
                 required
 
                 className="form-control"
-                id="exampleInputEmail1"
+                id="firstName"
                 aria-describedby="emailHelp"
                 onChange={(e)=>setFirstName(e.target.value)}
 
@@ -105,7 +105,7 @@ const SignUp = (props) => {
                 required
 
                 className="form-control"
-                id="exampleInputEmail1"
+                id="lastName"
                 aria-describedby="emailHelp"
                 onChange={(e)=>setLastName(e.target.value)}
 
@@ -118,9 +118,8 @@ const SignUp = (props) => {
               <input
                 type="number"
                 required
-
                 className="form-control"
-                id="exampleInputEmail1"
+                id="age"
                 aria-describedby="emailHelp"
                 onChange={(e)=>setAge(e.target.value)}
 
@@ -133,9 +132,8 @@ const SignUp = (props) => {
               <input
                 type="text"
                 required
-
                 className="form-control"
-                id="exampleInputEmail1"
+                id="gender"
                 aria-describedby="emailHelp"
                 onChange={(e)=>setGender(e.target.value)}
 
@@ -150,7 +148,7 @@ const SignUp = (props) => {
                 type="password"
                 required
                 className="form-control"
-                id="exampleInputPassword1"
+                id="password"
                 onChange={(e)=>setPassword(e.target.value)}
 
               />
@@ -163,7 +161,7 @@ const SignUp = (props) => {
                 type="password"
                 required
                 className="form-control"
-                id="exampleInputPassword1"
+                id="passwordConfirmation"
                 onChange={(e)=>setPasswordConfirmation(e.target.value)}
 
               />

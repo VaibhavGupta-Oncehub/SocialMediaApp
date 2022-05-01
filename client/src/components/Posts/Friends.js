@@ -2,7 +2,7 @@ const Friends=props=>{
 return(
     <div className="container">
         <div className="friend_box">
-          <table class="table table-hover table-sm">
+          <table className="table table-hover table-sm">
             <thead>
               <tr>
                 <th scope="col">#</th>
