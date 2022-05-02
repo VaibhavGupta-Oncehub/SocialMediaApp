@@ -1,51 +1,65 @@
-import { useState } from "react";
-import Header from "../Layout/Header";
+/* eslint-disable react/jsx-pascal-case */
+import { useState, useEffect } from "react";
 import Post from "../Posts/Post";
 import "./Profile.css";
 import Profile_card from "./Profile_card";
 import Friends from "../Posts/Friends";
-const DUMMY_POSTS = [
-  {
-    id: "m1",
-    name: "Sushi",
-    description: "Finest fish and veggies",
-  },
-  {
-    id: "m2",
-    name: "Schnitzel",
-    description: "A german specialty!",
-  },
-  {
-    id: "m3",
-    name: "Barbecue Burger",
-    description: "American, raw, meaty",
-  },
-  {
-    id: "m4",
-    name: "Green Bowl",
-    description: "Healthy...and green...",
-  },
-];
-const Profile = (props) => {
-  const [showFriend, setShowFriend] = useState(false);
-  const postList = DUMMY_POSTS.map((post) => (
-    <Post
-      id={post.id}
-      key={post.id}
-      name={post.name}
-      description={post.description}
-    ></Post>
-  ));
+import axios from "axios";
+import Cookies from "js-cookie";
+
+
+var posts = []
+
+
+const getAllPost = () => {
+  const current_user = localStorage.getItem("userData");  
+  const userToken = Cookies.get("authToken");
+  const userEmail = Cookies.get("userEmail");
+  const headers = {
+    "X-User-Email": userEmail,
+    "X-User-Token": userToken,
+  };
+  axios
+    .get("http://localhost:3000/user_posts/" + current_user[6], {
+      headers: headers,
+    })
+    .then((response) => {
+      // console.log(
+      //   "Get All Post Request's Response: " + JSON.stringify(response.data)
+      // );
+      posts = JSON.parse(JSON.stringify(response.data));
+      
+    })
+    .catch((error) => {
+      console.log("Error in get All Post Request: " + error);
+      // alert("Unable to fetch all posts.")
+    });
+};
+
+
+const Profile = () => {
+  const [showFriend, setShowFriend] = useState(true);
+
+  useEffect(() => {
+    getAllPost();
+  }, [showFriend])
+  
   return (
     <div>
-      <Header></Header>
-      <Profile_card
-        showFriend={showFriend}
-        setShowFriend={setShowFriend}
-      ></Profile_card>
-      {/* <div className="position">{postList}</div> */}
-      {showFriend ? <Friends></Friends> :<div className="position">{postList}</div> }
-      
+      <Profile_card showFriend={showFriend} setShowFriend={setShowFriend} getAllPost={getAllPost} />
+      {showFriend ? (
+        <div className="text-center" style={{ margin: "25px" }}>
+          <h1> My Friends</h1>
+          <Friends></Friends>{" "}
+        </div>
+      ) : ( 
+        <div className="text-center" style={{ margin: "25px" }}>
+          <h1>My Posts</h1>
+           <div className="position">{posts.map(function (post) {
+              return <Post key={post.id} id={post.id} title={post.title} description={post.description} user={post.user_id} image={post.image} showFriend={showFriend} setShowFriend={setShowFriend} />
+            })}</div>
+        </div>
+      )}
     </div>
   );
 };

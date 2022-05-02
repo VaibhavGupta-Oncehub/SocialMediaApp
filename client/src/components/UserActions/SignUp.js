@@ -15,7 +15,7 @@ const SignUp = (props) => {
 
   const formhandler=(e)=>{
     e.preventDefault() 
-    if(password != passwordConfirmation)
+    if(password !== passwordConfirmation)
     {
       console.log("password did not match to each other")
       return 0
@@ -36,36 +36,46 @@ const SignUp = (props) => {
     }
     axios.post(`http://localhost:3000/users`,{user})
       .then(res => {
-        console.log(res)
+        // console.log(res)
+        alert("User was successfully created.")
         navigate("/signin")
+        window.location.reload();
 
       }).catch(
-        (err)=>{
-          console.log(err)
+        (err) => {
+          alert("User can't be created due to an error: " + err);
         }
       )
   }
   return (
-    <div className="">
-      <div class="card container my-5 bg-info bg-opacity-25 ">
-        <h5 class="card-header bg-info d-flex justify-content-center text-white">Sing Up</h5>
+    <div className="container">
+      <div className="card container my-5 bg-info bg-opacity-25 ">
+        <h5 className="card-header bg-info d-flex justify-content-center text-white">
+          Sign Up
+        </h5>
         <div className="container">
           <form onSubmit={formhandler}>
             <div className="mb-3 m-2">
-              <label htmlFor="exampleInputEmail1 " className="form-label text-dark">
+              <label
+                htmlFor="exampleInputUser1 "
+                className="form-label text-dark"
+              >
                 User Name
               </label>
               <input
                 type="text"
                 required
                 className="form-control"
-                id="exampleInputEmail1"
+                id="exampleInputUser1"
                 aria-describedby="emailHelp"
-                onChange={(e)=>setUserName(e.target.value)}
+                onChange={(e) => setUserName(e.target.value)}
               />
             </div>
-            <div className="mb-3 m-2"> 
-              <label htmlFor="exampleInputEmail1" className="form-label text-dark">
+            <div className="mb-3 m-2">
+              <label
+                htmlFor="exampleInputEmail1"
+                className="form-label text-dark"
+              >
                 Email address
               </label>
               <input
@@ -74,98 +84,105 @@ const SignUp = (props) => {
                 className="form-control"
                 id="exampleInputEmail1"
                 aria-describedby="emailHelp"
-                onChange={(e)=>setEmail(e.target.value)}
-
+                onChange={(e) => setEmail(e.target.value)}
               />
-              <div id="emailHelp" class="form-text ">
+              <div id="emailHelp" className="form-text ">
                 Please enter the Valid email it will verify for further steps !!
               </div>
             </div>
             <div className="mb-3">
-              <label htmlFor="exampleInputEmail1" className="form-label text-dark">
-                first_name
+              <label
+                htmlFor="exampleInputEmail1"
+                className="form-label text-dark"
+              >
+                First Name
               </label>
               <input
                 type="text"
                 required
-
                 className="form-control"
-                id="exampleInputEmail1"
+                id="firstName"
                 aria-describedby="emailHelp"
-                onChange={(e)=>setFirstName(e.target.value)}
-
+                onChange={(e) => setFirstName(e.target.value)}
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="exampleInputEmail1" className="form-label text-dark">
-                last_name
+              <label
+                htmlFor="exampleInputEmail1"
+                className="form-label text-dark"
+              >
+                Last Name
               </label>
               <input
                 type="text"
                 required
-
                 className="form-control"
-                id="exampleInputEmail1"
+                id="lastName"
                 aria-describedby="emailHelp"
-                onChange={(e)=>setLastName(e.target.value)}
-
+                onChange={(e) => setLastName(e.target.value)}
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="exampleInputEmail1" className="form-label text-dark">
+              <label
+                htmlFor="exampleInputEmail1"
+                className="form-label text-dark"
+              >
                 Age
               </label>
               <input
                 type="number"
                 required
-
                 className="form-control"
-                id="exampleInputEmail1"
+                id="age"
                 aria-describedby="emailHelp"
-                onChange={(e)=>setAge(e.target.value)}
-
+                onChange={(e) => setAge(e.target.value)}
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="exampleInputEmail1" className="form-label text-dark">
-                gender
+              <label
+                htmlFor="exampleInputEmail1"
+                className="form-label text-dark"
+              >
+                Gender
               </label>
               <input
                 type="text"
                 required
-
                 className="form-control"
-                id="exampleInputEmail1"
+                id="gender"
                 aria-describedby="emailHelp"
-                onChange={(e)=>setGender(e.target.value)}
-
+                onChange={(e) => setGender(e.target.value)}
               />
             </div>
-            
+
             <div className="mb-3 m-2">
-              <label htmlFor="exampleInputPassword1" className="form-label text-dark">
+              <label
+                htmlFor="exampleInputPassword1"
+                className="form-label text-dark"
+              >
                 Password
               </label>
               <input
                 type="password"
                 required
                 className="form-control"
-                id="exampleInputPassword1"
-                onChange={(e)=>setPassword(e.target.value)}
-
+                id="password"
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
             <div className="mb-3 m-2">
-              <label htmlFor="exampleInputPassword1" className="form-label text-dark">
+              <label
+                htmlFor="exampleInputPassword1"
+                className="form-label text-dark"
+              >
                 Password confirmation
               </label>
               <input
                 type="password"
                 required
                 className="form-control"
-                id="exampleInputPassword1"
-                onChange={(e)=>setPasswordConfirmation(e.target.value)}
-
+                id="passwordConfirmation"
+                onChange={(e) => setPasswordConfirmation(e.target.value)}
               />
             </div>
             <div className="d-flex m-3 justify-content-center">
@@ -178,6 +195,13 @@ const SignUp = (props) => {
             </div>
           </form>
         </div>
+      </div>
+      <div className="divider f-flex align-items-center">
+        <h3 className="text-center fw-bold mx-3 mb-0 ">OR</h3>
+      </div>
+      <div className="text-center container" style={{ margin:"15px"}}>
+        <h4>Already have an account?</h4>
+        <button className="btn btn-primary btn-lg" onClick={() => navigate("/signin")} style={{ margin:"15px"}}> Sign In</button>
       </div>
     </div>
   );

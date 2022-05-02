@@ -1,47 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
-import Header from './components/Layout/Header'
-import Post from './components/Posts/Post';
-import { useState } from 'react';
+import "./App.css"
 
-const DUMMY_POSTS = [
-  {
-    id: "m1",
-    name: "Sushi",
-    description: "Finest fish and veggies",
-  },
-  {
-    id: "m2",
-    name: "Schnitzel",
-    description: "A german specialty!",
-  },
-  {
-    id: "m3",
-    name: "Barbecue Burger",
-    description: "American, raw, meaty",
-  },
-  {
-    id: "m4",
-    name: "Green Bowl",
-    description: "Healthy...and green...",
-  },
-];
-function App() {
-  const [userData,setUserData]=useState({})
-  const postlist = DUMMY_POSTS.map((post) => (
-    <Post
-      id={post.id}
-      key={post.id}
-      name={post.name}
-      description={post.description}
-    ></Post>
-  ));
+const isLoggedIn=() => {
+  const userData = localStorage.getItem("userData");
+  if (userData != null) {
+    return (
+      <a className="btn btn-primary btn-lg" href="/profile" role="button">
+        Go to Profile
+      </a>
+    );
+  } else {
+     return (
+       <a className="btn btn-primary btn-lg" href="/signup" role="button">
+         Sign Up
+       </a>
+     );
+  }
+}
+
+const App = () => {
   return (
     <div>
-      <Header userData={userData} setUserData={setUserData}></Header>
-      <main>
-        {postlist}
-      </main>
+      <div
+        className="jumbotron container"
+        style={{
+          border: "5px solid #4bcfff",
+          borderRadius: "5px",
+          textAlign: "center",
+          padding: "10px",
+          width: "100%",
+          marginLeft: "100px",
+          marginTop: "20px",
+        }}
+      >
+        <h1 className="display-3">Welcome to Social Media Platform</h1>
+        <p className="lead">
+          Now connect with your loved ones across the globe.
+        </p>
+        <hr className="my-4" />
+        <p>Join the community of millions.</p>
+        <div>{isLoggedIn()}</div>
+      </div>
     </div>
   );
 }
