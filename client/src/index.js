@@ -13,8 +13,6 @@ import { CookiesProvider } from "react-cookie";
 import NoPage from "./components/NoPage/NoPage";
 import Header from "./components/Layout/Header";
 
-
-
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   

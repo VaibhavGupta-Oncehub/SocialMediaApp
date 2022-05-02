@@ -5,29 +5,41 @@ import './Post.css'
 import Cookies from "js-cookie";
 import { useState } from "react";
 import EditPostModal from "./EditPostModal";
+import { useNavigate } from "react-router-dom";
+
 
 const Post = (props) => {
   const [showEditPostModal, setShowEditPostModal] = useState(false);
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
 
-
+  let navigate = useNavigate();
 
   const DeletePostHandler = (props) => {
-    confirm("Are you sure you want to delete the post?");
+    let isDeleteRequested = confirm("Are you sure you want to delete the post?");
     // console.log(props.id)
-    const userToken = Cookies.get("authToken");
-    const userEmail = Cookies.get("userEmail");
-     const headers = {
-       "X-User-Email": userEmail,
-       "X-User-Token": userToken,
-     };
-    axios.delete("http://localhost:3000/posts/" + props.id, { headers: headers }).then((response) => {
-      alert("Post was successfully deleted.")
+    if (isDeleteRequested) {
+          const userToken = Cookies.get("authToken");
+          const userEmail = Cookies.get("userEmail");
+          const headers = {
+            "X-User-Email": userEmail,
+            "X-User-Token": userToken,
+          };
+          axios
+            .delete("http://localhost:3000/posts/" + props.id, {
+              headers: headers,
+            })
+            .then((response) => {
+              alert("Post was successfully deleted.");
+              window.location.reload();
+            })
+            .catch((error) => {
+              alert("There was an error in deleting the post.");
+            });
+    } else {
+      navigate("/profile")
       window.location.reload();
-    }).catch((error) => {
-      alert("There was an error in deleting the post.")
-    });
+    }
   }
 
   return (

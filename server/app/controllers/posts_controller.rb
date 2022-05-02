@@ -30,7 +30,7 @@ class PostsController < ApplicationController
 
   # PATCH/PUT /posts/1
   def update
-    if @post.update(post_params)
+    if @post.update(post_update_params)
       render json: @post
     else
       render json: ErrorSerializer.serialize(@post.errors), status: :unprocessable_entity
@@ -52,5 +52,8 @@ class PostsController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def post_params
       params.permit(:id,:title, :description,:user_id,:image) 
+    end
+    def post_update_params
+      params.permit(:id,:title, :description,:image) 
     end
 end

@@ -107,12 +107,12 @@ const Header = () => {
                 <Button
                   label="Login"
                   className={classes.button}
-                  path="/signIn"
+                  path="/signin"
                 ></Button>
                 <Button
                   label="SignUp"
                   className={classes.button}
-                  path="/SignUp"
+                  path="/signup"
                 ></Button>
               </div>
             ) : (

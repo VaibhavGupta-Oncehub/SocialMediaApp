@@ -9,39 +9,55 @@ import Form from "react-bootstrap/Form";
 import { useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 
 const EditPostModal = (props) => {
   const handleClose = () => props.setShow(false);
   const [title, setTitle] = useState(props.title);
   const [description, setDescription] = useState(props.description);
-  const [image, setImage] = useState(props.image);
-
+  const [image, setImage] = useState(null);
+  const[upload,setUpload] = useState(false);
+  let navigate = useNavigate();
   const EditPostRequestHandler = (e) => {
     e.preventDefault();
     
-    confirm('Are you sure you want to edit this post?');
-    const userToken = Cookies.get("authToken");
-    console.log("userToken: ",userToken)
-    const userEmail = Cookies.get("userEmail");
-     const headers = {
-       "Content-Type": "multipart/form-data",
-       "X-User-Email": userEmail,
-       "X-User-Token": userToken,
-     };
-    
-     let formData = new FormData();
-     formData.append("title",title);
-     formData.append("description", description);
-    formData.append("image", image);
-    
-    axios.put("http://localhost:3000/posts/" + props.id, formData, { headers: headers }).then((response) => {
-      // console.log("Put Request Response: " + response);
-      alert("Post was successfully edited.");
+    let isEditRequested= confirm('Are you sure you want to edit this post?');
+
+    if (isEditRequested) {
+       const userToken = Cookies.get("authToken");
+       console.log("userToken: ", userToken);
+       const userEmail = Cookies.get("userEmail");
+       const headers = {
+         "Content-Type": "multipart/form-data",
+         "X-User-Email": userEmail,
+         "X-User-Token": userToken,
+       };
+
+       let formData = new FormData();
+       formData.append("id", props.id);
+       formData.append("title", title);
+       formData.append("description", description);
+       if (upload === true) {
+         formData.append("image", image);
+       }
+
+       let url = "http://localhost:3000/posts/" + props.id;
+
+       axios
+         .put(url, formData, { headers: headers })
+         .then((response) => {
+           // console.log("Put Request Response: " + response);
+           alert("Post was successfully edited.");
+           window.location.reload();
+         })
+         .catch((error) => {
+           alert("Post could not be edited due to some error: " + error);
+         });
+    } else {
+      navigate("/profile")
       window.location.reload();
-    }).catch((error) => {
-      alert("Post could not be edited due to some error: " + error);
-    })
+    }
   }
   return (
     <Modal show={props.show} onHide={handleClose}>
@@ -80,22 +96,27 @@ const EditPostModal = (props) => {
           </Form.Group>
           <h3 style={{ margin: "15px" }}>Post Image</h3>
           <img src={props.image.url} className="img-fluid background-image" />
-
-          <Form.Group controlId="formFile" className="mb-3">
-            <Form.Label style={{ margin: "15px" }}>
-              <h4>Edit Image| Choose another image</h4>
-            </Form.Label>
-            <Form.Control
-              type="file"
-              style={{ margin: "10px", size: "20px" }}
-              accept="image/png,image/jpg,image/jpeg"
-              multiple={true}
-              onChange={(event) => {
-                setImage(event.target.files[0]);
-              }}
-              required
-            />
+          
+          <div class="form-check form-switch" style={{ margin: "15px" }}>
+            <input className="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked={upload} onChange={() => setUpload(!upload)}/>
+            <label className="form-check-label" htmlFor="flexSwitchCheckChecked">Upload Post Image</label>
+          </div>
+          { upload &&  <Form.Group controlId="formFile" className="mb-3">
+              <Form.Label style={{ margin: "15px" }}>
+                <h4>Edit Image| Choose another image</h4>
+              </Form.Label>
+              <Form.Control
+                type="file"
+                style={{ margin: "10px", size: "20px" }}
+                accept="image/png,image/jpg,image/jpeg"
+                multiple={false}
+                onChange={(event) => {
+                  setImage(event.target.files[0]);
+                }}
+                
+              />
           </Form.Group>
+          }
         </Form>
       </Modal.Body>
       <Modal.Footer>
@@ -105,8 +126,13 @@ const EditPostModal = (props) => {
         <Button
           variant="primary"
           onClick={(e) => {
-            EditPostRequestHandler(e);
-            handleClose();
+            if (title === null || (upload === true && image === null) || description === null || title.length === 0 || description.length < 5 || description.length > 100 || title === "" || description === "") {
+              alert("Please validate the fields properly");
+            } else {
+              EditPostRequestHandler(e);
+              setUpload(!upload)
+              handleClose();
+            }
           }}
         >
           Save Changes
