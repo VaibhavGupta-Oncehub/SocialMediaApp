@@ -32,7 +32,7 @@ const CreatePost = ({ setShowCreatePost }) => {
     axios
       .post("http://localhost:3000/posts", formData, { headers: headers })
       .then((response) => {
-        console.log("Post Request's Response: " + JSON.stringify(response));
+        // console.log("Post Request's Response: " + JSON.stringify(response));
         alert("Post was created successfully!");
         setShowCreatePost(false);
         navigate("/profile");
@@ -40,7 +40,7 @@ const CreatePost = ({ setShowCreatePost }) => {
 
       })
       .catch((error) => {
-        console.log("Error in Post Request", error);
+        // console.log("Error in Post Request", error);
         alert("There was some error in creating the post.");
       });
   };

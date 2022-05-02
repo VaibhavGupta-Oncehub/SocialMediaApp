@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-pascal-case */
 import { useState, useEffect } from "react";
-import Header from "../Layout/Header";
 import Post from "../Posts/Post";
 import "./Profile.css";
 import Profile_card from "./Profile_card";
@@ -47,7 +46,6 @@ const Profile = () => {
   
   return (
     <div>
-      <Header></Header>
       <Profile_card showFriend={showFriend} setShowFriend={setShowFriend} getAllPost={getAllPost} />
       {showFriend ? (
         <div className="text-center" style={{ margin: "25px" }}>
