@@ -10,9 +10,9 @@ import Cookies from "js-cookie";
 
 var posts = []
 
+
 const getAllPost = () => {
-  
-  const current_user = localStorage.getItem("userData");
+  const current_user = localStorage.getItem("userData");  
   const userToken = Cookies.get("authToken");
   const userEmail = Cookies.get("userEmail");
   const headers = {

@@ -12,6 +12,7 @@ import Profile from "./components/UserActions/Profile";
 import { CookiesProvider } from "react-cookie";
 import NoPage from "./components/NoPage/NoPage";
 import Header from "./components/Layout/Header";
+import EditUser from "./components/UserActions/EditUser"
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -25,6 +26,8 @@ root.render(
           <Route path="/signin" element={<SignIn />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/edit_user" element={<EditUser />} />
+          
           <Route path="/*" element={<NoPage />} />
         </Routes>
       </CookiesProvider>
