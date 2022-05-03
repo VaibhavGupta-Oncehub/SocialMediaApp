@@ -12,14 +12,11 @@ const getUserInfo = () => {
   console.log("current user: " + userInfo);
 };
 
-
-
 const Profile_card = (props) => {
-  
   getUserInfo();
-  
-  console.log(userInfo)
-  
+
+  console.log(userInfo);
+
   const showFriendHandler = () => {
     props.setShowFriend(!props.showFriend);
   };
@@ -30,15 +27,12 @@ const Profile_card = (props) => {
   const [isClicked, setIsClicked] = useState(false);
   const [showCreatePost, setShowCreatePost] = useState(false);
 
-
-
   const CreatePostHandler = () => {
-    const current_user = localStorage.getItem('userData')
-    console.log(current_user)
+    const current_user = localStorage.getItem("userData");
+    console.log(current_user);
     if (current_user != null) {
-     setShowCreatePost(true);
-    }
-    else {
+      setShowCreatePost(true);
+    } else {
       setShowNotEditAlert(true);
     }
   };
@@ -47,7 +41,7 @@ const Profile_card = (props) => {
       CreatePostHandler();
       setIsClicked(false);
     }
-  }, [ isClicked]);
+  }, [isClicked]);
   return (
     <div>
       {showNotEditAlert && (
@@ -115,7 +109,6 @@ const Profile_card = (props) => {
                 className="btn btn-primary mx-1"
                 onClick={() => {
                   navigate("/edit_user");
-
                 }}
               >
                 Edit Profile

@@ -30,6 +30,7 @@ class PostsController < ApplicationController
 
   # PATCH/PUT /posts/1
   def update
+    puts("in the Update methord =================================================================")
     if @post.update(post_update_params)
       render json: @post
     else

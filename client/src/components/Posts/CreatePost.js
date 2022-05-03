@@ -37,11 +37,10 @@ const CreatePost = ({ setShowCreatePost }) => {
         setShowCreatePost(false);
         navigate("/profile");
         window.location.reload();
-
       })
       .catch((error) => {
         // console.log("Error in Post Request", error);
-        alert("There was some error in creating the post.");
+        alert("There was some error in creating the p.",error);
       });
   };
 
