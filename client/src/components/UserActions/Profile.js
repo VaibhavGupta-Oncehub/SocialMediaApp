@@ -6,10 +6,8 @@ import Profile_card from "./Profile_card";
 import Friends from "../Posts/Friends";
 import axios from "axios";
 import Cookies from "js-cookie";
-
-
+import Header from "../Layout/Header";
 var posts = []
-
 
 const getAllPost = () => {
   const current_user = localStorage.getItem("userData");  
@@ -45,6 +43,8 @@ const Profile = () => {
   }, [showFriend])
   
   return (
+    <>
+      <Header />
     <div>
       <Profile_card showFriend={showFriend} setShowFriend={setShowFriend} getAllPost={getAllPost} />
       {showFriend ? (
@@ -61,6 +61,8 @@ const Profile = () => {
         </div>
       )}
     </div>
+    </>
+    
   );
 };
 

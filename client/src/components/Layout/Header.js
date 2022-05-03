@@ -8,9 +8,10 @@ import Button from "../UI/Button";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Alert from "../UI/Alert";
 
 
-const Header = () => {
+const Header = (props) => {
   let navigate = useNavigate();
   const [status, setStatus] = useState(true);
   const [userData, setUserData] = useState({});
@@ -31,7 +32,7 @@ const Header = () => {
       localStorage.removeItem("userPostsData");
       alert("User has been signed out.");
       setStatus(!status)
-      navigate("/");
+      navigate("/signin",{state: {messageStatus: "success",message: "You are succesfully logout"}});
       window.location.reload();
       
     }).catch((err) => {
@@ -44,6 +45,7 @@ const Header = () => {
     setUserData(localStorage.getItem("userData"));
     if(userData==null)
     {
+      navigate("/signin",{ state: {messageStatus: 'error', message: "User not found please login First"} });
       setStatus(true);
     }
     if(userData!=null)
@@ -141,7 +143,6 @@ const Header = () => {
           </div>
         </div>
       </nav>
-
       <div className={classes["main-image"]}>
         <img src={mealsImage} alt="image"></img>
       </div>

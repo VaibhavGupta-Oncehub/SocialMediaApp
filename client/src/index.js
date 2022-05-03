@@ -20,14 +20,13 @@ root.render(
   <BrowserRouter>
     <div>
       <CookiesProvider>
-        <Header />
+        {/* <Header /> */}
         <Routes>
           <Route path="/" element={<App />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/edit_user" element={<EditUser />} />
-          
           <Route path="/*" element={<NoPage />} />
         </Routes>
       </CookiesProvider>
