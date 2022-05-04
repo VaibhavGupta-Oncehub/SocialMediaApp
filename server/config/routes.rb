@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   delete '/users/sign_out', to: 'sessions#destroy'
   get '/user_posts/:id', to: 'users#user_posts'
   patch '/edituser',to: 'users#user_edit'
+  get '/addfriend',to: 'users#friends_index'
   devise_for :users,expect: [:update]
   # custom users routes
 

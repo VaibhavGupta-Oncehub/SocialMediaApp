@@ -63,6 +63,14 @@ class UsersController < ApplicationController
   #   #   puts 'failed'
   #   # end
   # end
+  def friends_index
+    @friend=User.all
+    if !@friend.nil?
+      render json: @friend
+    else
+      render json: {status: false , message: 'No user found'}
+    end
+  end 
 
   def user_posts
     @user= User.find_by(user_post_params)

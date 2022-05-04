@@ -37,7 +37,7 @@ const App = () => {
   }, [state]);
   return (
     <div>
-      <Header />
+      <Header image={true} />
       <div
         className="jumbotron container"
         style={{

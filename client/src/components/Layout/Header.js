@@ -100,6 +100,11 @@ const Header = (props) => {
                         User Profile
                       </a>
                     </li>
+                    <li>
+                      <a className="dropdown-item" href="/addfriends">
+                        Add Friends
+                      </a>
+                    </li>
                   </ul>
                 </li>
               </ul>
@@ -143,9 +148,10 @@ const Header = (props) => {
           </div>
         </div>
       </nav>
-      <div className={classes["main-image"]}>
+      {props.image && <div className={classes["main-image"]}>
         <img src={mealsImage} alt="image"></img>
-      </div>
+      </div>}
+      
     </Fragment>
   );
 };
