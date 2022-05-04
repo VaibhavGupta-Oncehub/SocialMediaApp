@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :friends
   resources :friend_requests
   default_url_options :host => "localhost:3000"
 

@@ -1,3 +1,5 @@
+require 'json'
+
 class FriendRequestsController < ApplicationController
   before_action :set_friend_request, only: [:show, :update, :destroy]
 
@@ -19,8 +21,10 @@ class FriendRequestsController < ApplicationController
     for i in @requests do 
       puts(i.friend_id)
       username=User.where(id: i.friend_id).first
-      friends.append(username.username)
+      friends.append({username: username, requests: i})
     end 
+    puts("====================================")
+    puts(friends)
     if !friends.nil?
       render json: friends
     else
