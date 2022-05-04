@@ -42,7 +42,7 @@ const Profile = () => {
 
   return (
     <>
-      <Header />
+      <Header image={true}/>
       <div>
         <Profile_card
           showFriend={showFriend}

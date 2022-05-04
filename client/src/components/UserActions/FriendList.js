@@ -4,11 +4,20 @@ const FriendList = (props) => {
     <>
       {props.friends.map((friend) => {
         return (
-          <div className="container mx-5">
-            <ul class="list-group m-1">
-              <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div className="container mx-5 " key={friend.id}>
+            <ul className="list-group m-1">
+              <li className="list-group-item d-flex justify-content-between align-items-center">
                 {friend.first_name}
-                <button type="button" class="btn btn-info">Add Friend</button>
+                {friend.id}
+                <button
+                  type="button"
+                  onClick={() => {
+                    props.friendRequestHandler(friend.id)
+                  }}
+                  className="btn btn-info"
+                >
+                  Add Friend
+                </button>
               </li>
             </ul>
           </div>

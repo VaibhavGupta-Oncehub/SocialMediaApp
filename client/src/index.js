@@ -14,6 +14,7 @@ import NoPage from "./components/NoPage/NoPage";
 import Header from "./components/Layout/Header";
 import EditUser from "./components/UserActions/EditUser"
 import AddFriend from "./components/UserActions/AddFrind";
+import FriendRequestsLists from "./components/UserActions/FriendRequestsList";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -29,6 +30,7 @@ root.render(
           <Route path="/signup" element={<SignUp />} />
           <Route path="/edit_user" element={<EditUser />} />
           <Route path="/addfriends" element={<AddFriend />} />
+          <Route path="/friendrequests" element={<FriendRequestsLists />} />
           <Route path="/*" element={<NoPage />} />
         </Routes>
       </CookiesProvider>

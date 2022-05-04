@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :friend_requests
   default_url_options :host => "localhost:3000"
 
   resources :posts
@@ -8,6 +9,7 @@ Rails.application.routes.draw do
   get '/user_posts/:id', to: 'users#user_posts'
   patch '/edituser',to: 'users#user_edit'
   get '/addfriend',to: 'users#friends_index'
+  get '/requests/:id',to: 'friend_requests#user_friendRequests'
   devise_for :users,expect: [:update]
   # custom users routes
 
