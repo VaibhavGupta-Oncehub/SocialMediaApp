@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   patch '/edituser',to: 'users#user_edit'
   get '/addfriend',to: 'users#friends_index'
   get '/requests/:id',to: 'friend_requests#user_friendRequests'
+  delete '/removefriend/:id/:current_user',to: 'friends#remove_friend'
   devise_for :users,expect: [:update]
   # custom users routes
 

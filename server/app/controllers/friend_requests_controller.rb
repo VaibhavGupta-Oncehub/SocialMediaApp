@@ -16,7 +16,7 @@ class FriendRequestsController < ApplicationController
 
   def user_friendRequests 
     user=User.where(id: params[:id]).first
-    friend_requests=user.friendRequests.joins(:requestor)#.select("friend_requests.*, users.*")
+    friend_requests=user.friendRequests.joins(:requestor)
     requests=[]
     for i in friend_requests
       puts("=====================================")

@@ -3,9 +3,14 @@ class FriendsController < ApplicationController
 
   # GET /friends
   def index
-    @friends = Friend.all
-
-    render json: @friends
+    user=current_user
+    friend_ids=user.friends.pluck(:friend_id)
+    puts("================ the friends_ids")
+    puts(friend_ids)
+    users=User.where(id: friend_ids)
+    puts("================ the ids are ")
+    puts(users)
+    render json: users
   end
 
   # GET /friends/1
@@ -37,6 +42,15 @@ class FriendsController < ApplicationController
     @friend.destroy
   end
 
+
+  def remove_friend
+    friend=Friend.find_by(user_id: params[:id],friend_id: params[:current_user])
+    if friend.destroy
+      render json: { message: "Friend Successfully removed"}, status: :created
+    else
+      render json: {message: "Friend not removed"}, status: :unprocessable_entity
+    end
+  end 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_friend

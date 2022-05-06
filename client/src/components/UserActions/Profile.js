@@ -7,6 +7,7 @@ import Friends from "../Posts/Friends";
 import axios from "axios";
 import Cookies from "js-cookie";
 import Header from "../Layout/Header";
+import FriendList from "./FriendList";
 var posts = [];
 
 const getAllPost = () => {
@@ -35,6 +36,7 @@ const getAllPost = () => {
 
 const Profile = () => {
   const [showFriend, setShowFriend] = useState(false);
+  const [friends, setFriends] = useState([]);
 
   useEffect(() => {
     getAllPost();
@@ -42,7 +44,7 @@ const Profile = () => {
 
   return (
     <>
-      <Header image={true}/>
+      <Header image={true} />
       <div>
         <Profile_card
           showFriend={showFriend}
@@ -52,7 +54,7 @@ const Profile = () => {
         {showFriend ? (
           <div className="text-center" style={{ margin: "25px" }}>
             <h1> My Friends</h1>
-            <Friends></Friends>{" "}
+            <Friends></Friends>
           </div>
         ) : (
           <div className="text-center" style={{ margin: "25px" }}>

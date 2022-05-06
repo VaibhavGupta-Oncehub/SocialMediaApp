@@ -64,9 +64,12 @@ class UsersController < ApplicationController
   #   # end
   # end
   def friends_index
-    @friend=User.all
-    if !@friend.nil?
-      render json: @friend
+    user=current_user
+    friend_ids=user.friends.pluck(:friend_id)
+    users=User.where.not(id: friend_ids << user.id)
+
+    if users
+      render json: users
     else
       render json: {status: false , message: 'No user found'}
     end
@@ -74,13 +77,11 @@ class UsersController < ApplicationController
 
   def user_posts
     @user= User.find_by(user_post_params)
-
     if !@user.nil?
       render json: @user.posts
     else
       render json: {status: false , message: 'User does not exist.'}
     end
-
   end
 
   private 

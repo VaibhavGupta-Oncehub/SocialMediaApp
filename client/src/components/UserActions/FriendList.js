@@ -1,4 +1,7 @@
+import { useState } from "react";
+
 const FriendList = (props) => {
+  const [friendRequest,setFriendRequest]=useState(false)
   console.log(props.friends);
   return (
     <>
@@ -8,15 +11,17 @@ const FriendList = (props) => {
             <ul className="list-group m-1">
               <li className="list-group-item d-flex justify-content-between align-items-center">
                 {friend.first_name}
-                {friend.id}
+                
                 <button
                   type="button"
                   onClick={() => {
                     props.friendRequestHandler(friend.id)
+                    setFriendRequest(!friendRequest)
                   }}
                   className="btn btn-info"
                 >
-                  Add Friend
+                  {!friendRequest && <>Add Friend</>} 
+                  {friendRequest && <>Request send</>} 
                 </button>
               </li>
             </ul>

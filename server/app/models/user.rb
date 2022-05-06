@@ -4,6 +4,7 @@ class User < ApplicationRecord
   has_many :friendRequests
   has_many :friends
   has_many :friend_requests_as_requestor, class_name: "FriendRequest", foreign_key: "friend_id"
+  has_many :friend_as_requestor, class_name: "Friends", foreign_key: "friend_id"
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
