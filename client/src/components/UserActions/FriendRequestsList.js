@@ -6,10 +6,10 @@ import { useNavigate } from "react-router";
 
 const FriendRequestsLists = (props) => {
   const [friendRequests, setFriendRequest] = useState([]);
-  const navigate=useNavigate()
-  const acceptRequestHandler = (id) => {
+  const navigate = useNavigate();
+  const acceptRequestHandler = async (id, requeste_id) => {
     const current_user = JSON.parse(localStorage.getItem("userData")).id;
-    axios
+    await axios
       .post(`/friends`, { friend: { user_id: current_user, friend_id: id } })
       .then((res) => {
         // console.log(res)
@@ -20,7 +20,7 @@ const FriendRequestsLists = (props) => {
         alert("friend request can be added " + err);
       });
 
-    axios
+    await axios
       .post(`/friends`, { friend: { user_id: id, friend_id: current_user } })
       .then((res) => {
         // console.log(res)
@@ -36,12 +36,42 @@ const FriendRequestsLists = (props) => {
         alert("friend request can be added " + err);
       });
 
-
-
+    const userEmail = Cookies.get("userEmail");
+    const token = Cookies.get("authToken");
+    alert("request deleted ");
+    await axios
+      .delete("/friend_requests/"+requeste_id, {
+        headers: {
+          "X-User-Token": token,
+          "X-User-Email": userEmail,
+        },
+      })
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((err) => {
+        alert("There was an error while signing out: " + err.message);
+      });
   };
 
-  const deleteRequestHandler = (props) => {
+  const deleteRequestHandler = (id) => {
+    alert(id);
+    const userEmail = Cookies.get("userEmail");
+    const token = Cookies.get("authToken");
     alert("request deleted ");
+    axios
+      .delete("/friend_requests/" + id, {
+        headers: {
+          "X-User-Token": token,
+          "X-User-Email": userEmail,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        alert("There was an error while signing out: " + err.message);
+      });
   };
 
   useEffect(() => {
@@ -56,7 +86,8 @@ const FriendRequestsLists = (props) => {
         },
       })
       .then((res) => {
-        // console.log("the friend request", res.data[0].username.username);
+        console.log("the friend request", res.data);
+        setFriendRequest(res.data);
         // setFriendRequest(res.data[0].username)
       })
       .catch((err) => {
@@ -69,7 +100,7 @@ const FriendRequestsLists = (props) => {
       {friendRequests.length == 0 && <h1>no friends requests</h1>}
       {friendRequests.map((friend) => {
         return (
-          <div className="container mx-5 " key={friend.id}>
+          <div className="container mx-5 " key={friend.requeste_id}>
             <ul className="list-group m-1">
               <li className="list-group-item d-flex justify-content-between align-items-center">
                 {friend.username} send you a friend Request
@@ -77,7 +108,7 @@ const FriendRequestsLists = (props) => {
                   <button
                     type="button"
                     onClick={() => {
-                      acceptRequestHandler(friend.id);
+                      acceptRequestHandler(friend.user_id, friend.requeste_id);
                     }}
                     className="btn btn-success"
                   >
@@ -86,7 +117,7 @@ const FriendRequestsLists = (props) => {
                   <button
                     type="button"
                     onClick={() => {
-                      deleteRequestHandler();
+                      deleteRequestHandler(friend.requeste_id);
                     }}
                     className="btn btn-danger mx-2"
                   >

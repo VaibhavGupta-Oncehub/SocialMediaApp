@@ -3,7 +3,8 @@ class User < ApplicationRecord
   acts_as_token_authenticatable
   has_many :friendRequests
   has_many :friends
-  
+  has_many :friend_requests_as_requestor, class_name: "FriendRequest", foreign_key: "friend_id"
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,

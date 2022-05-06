@@ -15,22 +15,19 @@ class FriendRequestsController < ApplicationController
   end
 
   def user_friendRequests 
-    @user=User.where(id: params[:id]).first
-    @requests=@user.friendRequests
-    friends=[]
-    for i in @requests do 
-      puts(i.friend_id)
-      username=User.where(id: i.friend_id).first
-      friends.append({username: username, requests: i})
+    user=User.where(id: params[:id]).first
+    friend_requests=user.friendRequests.joins(:requestor)#.select("friend_requests.*, users.*")
+    requests=[]
+    for i in friend_requests
+      puts("=====================================")
+      requests.append({username: i.requestor.username,requeste_id: i.id,user_id: i.requestor.id})
+      # puts (i.friend.first_name)
     end 
-    puts("====================================")
-    puts(friends)
-    if !friends.nil?
-      render json: friends
+    if !requests.nil?
+      render json: requests
     else
       render json: {status: false , message: 'No friendRequest'}
     end
-
   end
 
   # POST /friend_requests
