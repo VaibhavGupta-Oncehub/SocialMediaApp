@@ -10,13 +10,21 @@ class FriendsController < ApplicationController
     users=User.where(id: friend_ids)
     puts("================ the ids are ")
     puts(users)
-    render json: users
+    render json: users 
   end
 
   # GET /friends/1
   def show
     render json: @friend
   end
+
+  def block 
+    friend=Friend.find_by(user_id: params[:id], friend_id: params[:current_user])
+    friend.block=true
+    if friend.save   
+       render status: 200
+    end
+  end 
 
   # POST /friends
   def create

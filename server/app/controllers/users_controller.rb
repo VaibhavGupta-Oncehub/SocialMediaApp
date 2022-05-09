@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
     # before_action :set_user, only: [:show, :update, :destroy]
-    def create
+  def create
     @user=User.new(user_params)
     if @user.save
       render :create 
@@ -32,10 +32,19 @@ class UsersController < ApplicationController
   #   render json: @users
   # end
 
-  # # GET /user/1
+  # GET /user/1
   # def show
   #   render json: @user
   # end
+  def userfriend
+    user=User.where(id: params[:id]).first
+    if user==nil 
+      render json: { error: true, message: 'User not found !'}, 
+      status: 401 and return
+    else 
+      render json: user.as_json(only: [:id ,:first_name,:last_name,:username,:age,:gender, :email]),status: :created
+    end
+  end
 
   # PATCH/PUT /user/1/
   # def update
