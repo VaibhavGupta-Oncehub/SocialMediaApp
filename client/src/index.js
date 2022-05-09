@@ -15,6 +15,7 @@ import Header from "./components/Layout/Header";
 import EditUser from "./components/UserActions/EditUser"
 import AddFriend from "./components/UserActions/AddFrind";
 import FriendRequestsLists from "./components/UserActions/FriendRequestsList";
+import FriendProfile from "./components/Friends/FriendProfile";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -31,6 +32,7 @@ root.render(
           <Route path="/edit_user" element={<EditUser />} />
           <Route path="/addfriends" element={<AddFriend />} />
           <Route path="/friendrequests" element={<FriendRequestsLists />} />
+          <Route path="/friendprofile" element={<FriendProfile />} />
           <Route path="/*" element={<NoPage />} />
         </Routes>
       </CookiesProvider>
