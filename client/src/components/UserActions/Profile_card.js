@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
 import CreatePost from "../Posts/CreatePost";
 import { useState, useEffect } from "react";
-import EditUser from "../UserActions/EditUser";
 import { useNavigate } from "react-router-dom";
 
 var userInfo = [];
@@ -9,7 +8,6 @@ var userInfo = [];
 const getUserInfo = () => {
   const current_user = localStorage.getItem("userData");
   userInfo = JSON.parse(current_user);
-  console.log("current user: " + userInfo);
 };
 
 
@@ -17,8 +15,6 @@ const getUserInfo = () => {
 const Profile_card = (props) => {
   
   getUserInfo();
-  
-  console.log(userInfo)
   
   const showFriendHandler = () => {
     props.setShowFriend(!props.showFriend);

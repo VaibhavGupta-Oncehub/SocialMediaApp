@@ -26,7 +26,6 @@ const EditPostModal = (props) => {
 
     if (isEditRequested) {
        const userToken = Cookies.get("authToken");
-       console.log("userToken: ", userToken);
        const userEmail = Cookies.get("userEmail");
        const headers = {
          "Content-Type": "multipart/form-data",
@@ -97,7 +96,7 @@ const EditPostModal = (props) => {
           <h3 style={{ margin: "15px" }}>Post Image</h3>
           <img src={props.image.url} className="img-fluid background-image" />
           
-          <div class="form-check form-switch" style={{ margin: "15px" }}>
+          <div className="form-check form-switch" style={{ margin: "15px" }}>
             <input className="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked={upload} onChange={() => setUpload(!upload)}/>
             <label className="form-check-label" htmlFor="flexSwitchCheckChecked">Upload Post Image</label>
           </div>

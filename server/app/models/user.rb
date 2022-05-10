@@ -12,6 +12,9 @@ class User < ApplicationRecord
   end
 
   has_many :posts,:dependent =>:destroy
+  has_many :comments
+  
+  
 
   validates :first_name, presence: true, allow_blank:false
   validates :last_name, presence: true, allow_blank:false

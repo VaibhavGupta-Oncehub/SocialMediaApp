@@ -8,9 +8,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 
-var posts = []
-
-
+var posts = [];
 const getAllPost = () => {
   const current_user = localStorage.getItem("userData");  
   const userToken = Cookies.get("authToken");
@@ -55,8 +53,19 @@ const Profile = () => {
       ) : ( 
         <div className="text-center" style={{ margin: "25px" }}>
           <h1>My Posts</h1>
-           <div className="position">{posts.map(function (post) {
-              return <Post key={post.id} id={post.id} title={post.title} description={post.description} user={post.user_id} image={post.image} showFriend={showFriend} setShowFriend={setShowFriend} />
+            <div className="position">{posts.map(function (post) {
+            
+                return (
+                <Post
+                  key={post.id}
+                  id={post.id}
+                  title={post.title}
+                  description={post.description}
+                  user={post.user_id}
+                  image={post.image}
+                  showFriend={showFriend}
+                />
+              );
             })}</div>
         </div>
       )}
