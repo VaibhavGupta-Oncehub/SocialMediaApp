@@ -8,49 +8,65 @@ import Button from "../UI/Button";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Alert from "../UI/Alert";
+import Notifications from "../UserActions/Notifications";
 
-
-const Header = () => {
+const Header = (props) => {
   let navigate = useNavigate();
   const [status, setStatus] = useState(true);
   const [userData, setUserData] = useState({});
+  const [friendRequests,setFriendRequest]=useState([])
+  
 
   const logoutHandler = () => {
-    localStorage.clear()
-    const userEmail=Cookies.get('userEmail')
-    const token=Cookies.get('authToken')
-    axios.delete("http://localhost:3000/users/sign_out", {
-      headers: {
-        "X-User-Token": token,
-        "X-User-Email": userEmail,
-      },
-    }).then(() => {
-      Cookies.remove('userEmail')
-      Cookies.remove('authToken')
-      localStorage.removeItem('userdata')
-      localStorage.removeItem("userPostsData");
-      alert("User has been signed out.");
-      setStatus(!status)
-      navigate("/");
-      window.location.reload();
-      
-    }).catch((err) => {
-      alert("There was an error while signing out: " + err.message);
-      setStatus(false)
-    })
+    localStorage.clear();
+    const userEmail = Cookies.get("userEmail");
+    const token = Cookies.get("authToken");
+    axios
+      .delete("http://localhost:3000/users/sign_out", {
+        headers: {
+          "X-User-Token": token,
+          "X-User-Email": userEmail,
+        },
+      })
+      .then(() => {
+        Cookies.remove("userEmail");
+        Cookies.remove("authToken");
+        localStorage.removeItem("userdata");
+        localStorage.removeItem("userPostsData");
+        alert("User has been signed out.");
+        setStatus(!status);
+        navigate("/signin", {
+          state: {
+            messageStatus: "success",
+            message: "You are succesfully logout",
+          },
+        });
+        window.location.reload();
+      })
+      .catch((err) => {
+        alert("There was an error while signing out: " + err.message);
+        setStatus(false);
+      });
   };
 
   useEffect(() => {
     setUserData(localStorage.getItem("userData"));
-    if(userData==null)
-    {
+    if (userData == null) {
+      navigate("/signin", {
+        state: {
+          messageStatus: "error",
+          message: "User not found please login First",
+        },
+      });
       setStatus(true);
     }
-    if(userData!=null)
-    {
+    if (userData != null) {
       setStatus(false);
     }
   }, [status]);
+
+  
 
   return (
     <Fragment>
@@ -89,13 +105,31 @@ const Header = () => {
                     aria-labelledby="navbarDropdown"
                   >
                     <li>
-                      <a className="dropdown-item" href="/" style={{border: "1px solid", borderRadius: "5px", marginBottom: "5px"}}>
+                      <a
+                        className="dropdown-item"
+                        href="/"
+                        style={{
+                          border: "1px solid",
+                          borderRadius: "5px",
+                          marginBottom: "5px",
+                        }}
+                      >
                         Home
                       </a>
                     </li>
                     <li>
                       <a className="dropdown-item" href="/profile">
                         User Profile
+                      </a>
+                    </li>
+                    <li>
+                      <a className="dropdown-item" href="/addfriends">
+                        Add Friends
+                      </a>
+                    </li>
+                    <li>
+                      <a className="dropdown-item" href="/friendrequests">
+                        Friend requests
                       </a>
                     </li>
                   </ul>
@@ -116,15 +150,18 @@ const Header = () => {
                 ></Button>
               </div>
             ) : (
+              <>
                 <button
                   id="logoutButton"
-                className={classes.button}
-                onClick={() => {
-                  logoutHandler();
-                }}
-              >
-                Logout
-              </button>
+                  className={classes.button}
+                  onClick={() => {
+                    logoutHandler();
+                  }}
+                >
+                  Logout
+                </button>
+                {/* <Notifications friendRequests={friendRequests}></Notifications> */}
+              </>
             )}
 
             <form className="d-flex ml-auto ">
@@ -141,10 +178,11 @@ const Header = () => {
           </div>
         </div>
       </nav>
-
-      <div className={classes["main-image"]}>
-        <img src={mealsImage} alt="image"></img>
-      </div>
+      {props.image && (
+        <div className={classes["main-image"]}>
+          <img src={mealsImage} alt="image"></img>
+        </div>
+      )}
     </Fragment>
   );
 };

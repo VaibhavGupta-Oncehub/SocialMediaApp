@@ -16,6 +16,20 @@ const Profile_card = (props) => {
   
   getUserInfo();
   
+    // const getUserInfo = () => {
+    //   const current_user = localStorage.getItem("userData");
+    //   userInfo = JSON.parse(current_user);
+    //   console.log("current user: " + userInfo);
+    // };
+
+  const [currentUser,setCurrentUser]=useState({})
+
+  useEffect(()=>{
+    const userData = JSON.parse(localStorage.getItem("userData"));
+    console.log(userData)
+    setCurrentUser(userData)
+  },[])
+  // getUserInfo();
   const showFriendHandler = () => {
     props.setShowFriend(!props.showFriend);
   };
@@ -26,15 +40,12 @@ const Profile_card = (props) => {
   const [isClicked, setIsClicked] = useState(false);
   const [showCreatePost, setShowCreatePost] = useState(false);
 
-
-
   const CreatePostHandler = () => {
-    const current_user = localStorage.getItem('userData')
-    console.log(current_user)
+    const current_user = localStorage.getItem("userData");
+    console.log(current_user);
     if (current_user != null) {
-     setShowCreatePost(true);
-    }
-    else {
+      setShowCreatePost(true);
+    } else {
       setShowNotEditAlert(true);
     }
   };
@@ -43,7 +54,7 @@ const Profile_card = (props) => {
       CreatePostHandler();
       setIsClicked(false);
     }
-  }, [ isClicked]);
+  }, [isClicked]);
   return (
     <div>
       {showNotEditAlert && (
@@ -84,17 +95,17 @@ const Profile_card = (props) => {
           </div>
 
           <h5 className="card-title m-3 text-center ">
-            {(userInfo.first_name + " " + userInfo.last_name).toUpperCase()}
+            {(currentUser.first_name + " " + currentUser.last_name).toUpperCase()}
           </h5>
           <h6 className="card-subtitle mb-2 text-center">
-            UserName: {userInfo.username}
+            UserName: {currentUser.username}
           </h6>
-          <h6 className="card-text text-center">Email: {userInfo.email}</h6>
+          <h6 className="card-text text-center">Email: {currentUser.email}</h6>
 
           <h6 className="card-subtitle mb-2 text-center">
-            Gender: {userInfo.gender}
+            Gender: {currentUser.gender}
           </h6>
-          <h6 className="card-text text-center">Age: {userInfo.age}</h6>
+          <h6 className="card-text text-center">Age: {currentUser.age}</h6>
           <div className=" text-center ">
             <div>
               <button
@@ -111,7 +122,6 @@ const Profile_card = (props) => {
                 className="btn btn-primary mx-1"
                 onClick={() => {
                   navigate("/edit_user");
-
                 }}
               >
                 Edit Profile

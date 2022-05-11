@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :friends
+  resources :friend_requests
   default_url_options :host => "localhost:3000"
 
   resources :posts do 
@@ -11,7 +13,14 @@ Rails.application.routes.draw do
   post '/users/sign_in', to: 'sessions#create'
   delete '/users/sign_out', to: 'sessions#destroy'
   get '/user_posts/:id', to: 'users#user_posts'
-  devise_for :users
- 
+  patch '/edituser',to: 'users#user_edit'
+  get '/addfriend',to: 'users#friends_index'
+  get '/requests/:id',to: 'friend_requests#user_friendRequests'
+  get '/usersfriend/:id',to: 'users#userfriend'
+  delete '/removefriend/:id/:current_user',to: 'friends#remove_friend'
+  patch '/block/:id/:current_user',to: 'friends#block'
+  patch '/unblock/:id/:current_user',to: 'friends#unblock'
+  devise_for :users,expect: [:update]
+  # custom users routes
 
 end

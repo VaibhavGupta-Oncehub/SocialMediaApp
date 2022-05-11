@@ -1,30 +1,29 @@
 import { useState } from "react";
-import { Link,useNavigate } from "react-router-dom";
-import axios from 'axios';
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const SignUp = (props) => {
-  const [username,setUserName]=useState("")
-  const [email,setEmail]=useState("")
-  const [firstName,setFirstName]=useState("")
-  const [lastName,setLastName]=useState("")
-  const [age,setAge]=useState(0)
-  const [gender,setGender]=useState("")
-  const [password,setPassword]=useState("")
-  const [passwordConfirmation,setPasswordConfirmation]=useState("")
+  const [username, setUserName] = useState("");
+  const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [age, setAge] = useState(0);
+  const [gender, setGender] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
   let navigate = useNavigate();
 
-  const formhandler=(e)=>{
-    e.preventDefault() 
-    if(password !== passwordConfirmation)
-    {
-      console.log("password did not match to each other")
-      return 0
-    }if(age<=0)
-    {
-      console.log("Age is to small ")
-      return 0
+  const formhandler = (e) => {
+    e.preventDefault();
+    if (password !== passwordConfirmation) {
+      console.log("password did not match to each other");
+      return 0;
     }
-    const user={
+    if (age <= 0) {
+      console.log("Age is to small ");
+      return 0;
+    }
+    const user = {
       email,
       first_name: firstName,
       last_name: lastName,
@@ -32,21 +31,24 @@ const SignUp = (props) => {
       age,
       gender,
       password,
-      password_confirmation: passwordConfirmation
-    }
-    axios.post(`http://localhost:3000/users`,{user})
-      .then(res => {
+      password_confirmation: passwordConfirmation,
+    };
+    axios
+      .post(`http://localhost:3000/users`, { user })
+      .then((res) => {
         // console.log(res)
-        alert("User was successfully created.")
-        navigate("/signin")
-        window.location.reload();
-
-      }).catch(
-        (err) => {
-          alert("User can't be created due to an error: " + err);
-        }
-      )
-  }
+        alert("User was successfully created.");
+        navigate("/signin", {
+          state: {
+            messageStatus: "success",
+            message: "User Successfully created, a confirmation mail is send to you email please click confirm email ",
+          },
+        });
+      })
+      .catch((err) => {
+        alert("User can't be created due to an error: " + err);
+      });
+  };
   return (
     <div className="container">
       <div className="card container my-5 bg-info bg-opacity-25 ">
@@ -189,9 +191,6 @@ const SignUp = (props) => {
               <button type="submit" className="btn btn-primary mx-1 ">
                 Submit
               </button>
-              <Link to="/">
-                <button className="btn btn-primary ">Home</button>
-              </Link>
             </div>
           </form>
         </div>
@@ -199,9 +198,16 @@ const SignUp = (props) => {
       <div className="divider f-flex align-items-center">
         <h3 className="text-center fw-bold mx-3 mb-0 ">OR</h3>
       </div>
-      <div className="text-center container" style={{ margin:"15px"}}>
+      <div className="text-center container" style={{ margin: "15px" }}>
         <h4>Already have an account?</h4>
-        <button className="btn btn-primary btn-lg" onClick={() => navigate("/signin")} style={{ margin:"15px"}}> Sign In</button>
+        <button
+          className="btn btn-primary btn-lg"
+          onClick={() => navigate("/signin")}
+          style={{ margin: "15px" }}
+        >
+          {" "}
+          Sign In
+        </button>
       </div>
     </div>
   );

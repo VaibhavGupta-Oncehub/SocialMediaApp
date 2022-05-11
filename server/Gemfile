@@ -27,6 +27,7 @@ gem 'devise'
 gem 'simple_token_authentication', '~> 1.0'
 
 gem 'active_model_serializers'
+gem 'hirb'
 
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible

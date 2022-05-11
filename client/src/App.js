@@ -1,6 +1,9 @@
-import "./App.css"
-
-const isLoggedIn=() => {
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router";
+import "./App.css";
+import Header from "./components/Layout/Header";
+import Alert from "./components/UI/Alert";
+const isLoggedIn = () => {
   const userData = localStorage.getItem("userData");
   if (userData != null) {
     return (
@@ -9,17 +12,32 @@ const isLoggedIn=() => {
       </a>
     );
   } else {
-     return (
-       <a className="btn btn-primary btn-lg" href="/signup" role="button">
-         Sign Up
-       </a>
-     );
+    return (
+      <a className="btn btn-primary btn-lg" href="/signup" role="button">
+        Sign Up
+      </a>
+    );
   }
-}
+};
 
 const App = () => {
+  const { state } = useLocation();
+  let m=""
+  let s=""
+
+  useEffect(() => {
+    console.log(state)
+    if (state) {
+      console.log("changenig message")
+      const { messageStatus, message } = state;
+      m=messageStatus
+      s=message
+      console.log(m,s)
+    }
+  }, [state]);
   return (
     <div>
+      <Header image={true} />
       <div
         className="jumbotron container"
         style={{
@@ -42,6 +60,6 @@ const App = () => {
       </div>
     </div>
   );
-}
+};
 
 export default App;
