@@ -3,20 +3,21 @@ import CreatePost from "../Posts/CreatePost";
 import { useState, useEffect } from "react";
 import EditUser from "../UserActions/EditUser";
 import { useNavigate } from "react-router-dom";
-
-var userInfo = [];
-
-const getUserInfo = () => {
-  const current_user = localStorage.getItem("userData");
-  userInfo = JSON.parse(current_user);
-  console.log("current user: " + userInfo);
-};
+// const getUserInfo = () => {
+//   const current_user = localStorage.getItem("userData");
+//   userInfo = JSON.parse(current_user);
+//   console.log("current user: " + userInfo);
+// };
 
 const Profile_card = (props) => {
-  getUserInfo();
+  const [currentUser,setCurrentUser]=useState({})
 
-  console.log(userInfo);
-
+  useEffect(()=>{
+    const userData = JSON.parse(localStorage.getItem("userData"));
+    console.log(userData)
+    setCurrentUser(userData)
+  },[])
+  // getUserInfo();
   const showFriendHandler = () => {
     props.setShowFriend(!props.showFriend);
   };
@@ -82,17 +83,17 @@ const Profile_card = (props) => {
           </div>
 
           <h5 className="card-title m-3 text-center ">
-            {(userInfo.first_name + " " + userInfo.last_name).toUpperCase()}
+            {(currentUser.first_name + " " + currentUser.last_name).toUpperCase()}
           </h5>
           <h6 className="card-subtitle mb-2 text-center">
-            UserName: {userInfo.username}
+            UserName: {currentUser.username}
           </h6>
-          <h6 className="card-text text-center">Email: {userInfo.email}</h6>
+          <h6 className="card-text text-center">Email: {currentUser.email}</h6>
 
           <h6 className="card-subtitle mb-2 text-center">
-            Gender: {userInfo.gender}
+            Gender: {currentUser.gender}
           </h6>
-          <h6 className="card-text text-center">Age: {userInfo.age}</h6>
+          <h6 className="card-text text-center">Age: {currentUser.age}</h6>
           <div className=" text-center ">
             <div>
               <button

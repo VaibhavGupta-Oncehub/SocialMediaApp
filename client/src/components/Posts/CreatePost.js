@@ -13,14 +13,15 @@ const CreatePost = ({ setShowCreatePost }) => {
   const CreatePostRequesthandler = (e) => {
     e.preventDefault();
 
-    const current_user = localStorage.getItem("userData");
+    const current_user = JSON.parse(localStorage.getItem("userData"));
+
     const userToken = Cookies.get("authToken");
     const userEmail = Cookies.get("userEmail");
 
     let formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
-    formData.append("user_id", current_user[6]);
+    formData.append("user_id", current_user.id);
     formData.append("image", image);
 
     const headers = {

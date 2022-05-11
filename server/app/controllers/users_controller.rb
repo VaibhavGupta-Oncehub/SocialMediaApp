@@ -11,14 +11,17 @@ class UsersController < ApplicationController
   end 
 
   def user_edit
+    puts("=======================================================")
     puts(" in the user edit function ")
-    user=User.where(id: params[:id]).first
+    user=User.where(id: params[:id])
     if user==nil 
+      puts("============ in the null user =============")
       render json: { error: true, message: 'User not found !'}, 
       status: 401 and return
     end
     if user.update(user_modified_params)
-      render json: {success: true , message: 'User successfully updated'}
+      puts("============ in the user updated  =============")
+      render json: user.as_json(only: [:id ,:first_name,:last_name,:username,:age,:gender, :email,:authentication_token]),status: :created
     else
       puts(user.errors.full_messages)
       head(:unprocessable_entity)
@@ -37,24 +40,36 @@ class UsersController < ApplicationController
   #   render json: @user
   # end
   def userfriend
+    x=Friend.find_by(user_id: current_user.id, friend_id: params[:id])
+    puts("========")
+    puts(x.block)
+    if x.block==true
+      puts("==== x bloc function === ")
+      render json: { error: true, message: 'You are not authorized to see this profile'}, :status => :unauthorized and return
+    end
+
     user=User.where(id: params[:id]).first
     if user==nil 
+      puts("==== user is nill === ")
+      
       render json: { error: true, message: 'User not found !'}, 
       status: 401 and return
     else 
+      puts("==== success === ")
+
       render json: user.as_json(only: [:id ,:first_name,:last_name,:username,:age,:gender, :email]),status: :created
     end
   end
 
   # PATCH/PUT /user/1/
-  # def update
-  #   puts("in the update function ======================================")
-  #   # if @user.update(user_modified_params)
-  #   #   render json: @user
-  #   # else
-  #   #   render json: ErrorSerializer.serialize(@user.errors), status: :unprocessable_entity
-  #   # end
-  # end
+  def update
+    puts("in the update function ======================================")
+    if @user.update(user_modified_params)
+      render json: @user
+    else
+      render json: ErrorSerializer.serialize(@user.errors), status: :unprocessable_entity
+    end
+  end
 
   # # DELETE /user/1
   # def destroy
@@ -102,7 +117,7 @@ class UsersController < ApplicationController
     params.permit(:id)
   end
   def user_modified_params
-    params.permit(:id,:first_name,:last_name,:age,:gender,:username);
+    params.permit(:id,:first_name,:last_name,:age,:gender,:username,:email,);
   end
   # #  # Use callbacks to share common setup or constraints between actions.
   #   def set_user

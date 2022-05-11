@@ -11,7 +11,7 @@ import FriendList from "./FriendList";
 var posts = [];
 
 const getAllPost = () => {
-  const current_user = localStorage.getItem("userData");
+  const current_user = JSON.parse(localStorage.getItem("userData"));
   const userToken = Cookies.get("authToken");
   const userEmail = Cookies.get("userEmail");
   const headers = {
@@ -19,7 +19,7 @@ const getAllPost = () => {
     "X-User-Token": userToken,
   };
   axios
-    .get("http://localhost:3000/user_posts/" + current_user[6], {
+    .get("http://localhost:3000/user_posts/" + current_user.id, {
       headers: headers,
     })
     .then((response) => {
@@ -35,7 +35,7 @@ const getAllPost = () => {
 };
 
 const Profile = () => {
-  const [showFriend, setShowFriend] = useState(false);
+  const [showFriend, setShowFriend] = useState(true);
   const [friends, setFriends] = useState([]);
 
   useEffect(() => {

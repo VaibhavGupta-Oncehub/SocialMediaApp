@@ -23,14 +23,7 @@ const FriendRequestsLists = (props) => {
     await axios
       .post(`/friends`, { friend: { user_id: id, friend_id: current_user } })
       .then((res) => {
-        // console.log(res)
-        // navigate("/signin", {
-        //   state: {
-        //     messageStatus: "success",
-        //     message:
-        //       "User Successfully created, a confirmation mail is send to you email please click confirm email ",
-        //   },
-        // });
+        window.location.reload(false)
       })
       .catch((err) => {
         alert("friend request can be added " + err);
@@ -38,7 +31,6 @@ const FriendRequestsLists = (props) => {
 
     const userEmail = Cookies.get("userEmail");
     const token = Cookies.get("authToken");
-    alert("request deleted ");
     await axios
       .delete("/friend_requests/"+requeste_id, {
         headers: {
@@ -68,6 +60,7 @@ const FriendRequestsLists = (props) => {
       })
       .then((res) => {
         console.log(res);
+        window.location.reload(false)
       })
       .catch((err) => {
         alert("There was an error while signing out: " + err.message);
@@ -88,7 +81,6 @@ const FriendRequestsLists = (props) => {
       .then((res) => {
         console.log("the friend request", res.data);
         setFriendRequest(res.data);
-        // setFriendRequest(res.data[0].username)
       })
       .catch((err) => {
         console.log(err);

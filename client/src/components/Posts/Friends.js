@@ -38,9 +38,8 @@ const Friends = (props) => {
         },
       })
       .then((res) => {
-        console.log(res)
+        console.log(res);
         window.location.reload(false);
-        
       })
       .catch((err) => {
         alert("There was an error while signing out: " + err.message);
@@ -83,15 +82,20 @@ const Friends = (props) => {
         }
       )
       .then((response) => {
-        // Code
-        console.log(response);
+        window.location.reload(false);
+
       })
       .catch((error) => {
-        // Code
       });
+  };
+  const unblockFriend = async (id) => {
+    const current_user = JSON.parse(localStorage.getItem("userData")).id;
+    const userEmail = Cookies.get("userEmail");
+    const token = Cookies.get("authToken");
+
     await axios
       .patch(
-        "/block/" + current_user + "/" + id,
+        "/unblock/" + id + "/" + current_user,
         {},
         {
           headers: {
@@ -101,8 +105,7 @@ const Friends = (props) => {
         }
       )
       .then((response) => {
-        // Code
-        console.log(response);
+        window.location.reload(false);
       })
       .catch((error) => {
         // Code
@@ -119,27 +122,45 @@ const Friends = (props) => {
               <li className="list-group-item d-flex justify-content-between align-items-center">
                 {friend.first_name}
                 {friend.id}
-                {friend.block}
                 <div>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      navigate("/friendprofile", { state: { id: friend.id } });
-                    }}
-                    className="btn btn-info m-2"
-                  >
-                    Show profile
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      blockFriend(friend.id);
-                      // navigate('/friendprofile', { state: { id: friend.id } });
-                    }}
-                    className="btn btn-warning m-2"
-                  >
-                    Block
-                  </button>
+                  {friend.block == 1 && (
+                    <div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          unblockFriend(friend.id);
+                        }}
+                        className="btn btn-info m-2"
+                      >
+                        unblock
+                      </button>
+                    </div>
+                  )}
+                  {friend.block == 0 && (
+                    <div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          navigate("/friendprofile", {
+                            state: { id: friend.id },
+                          });
+                        }}
+                        className="btn btn-info m-2"
+                      >
+                        Show profile
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          blockFriend(friend.id);
+                        }}
+                        className="btn btn-warning m-2"
+                      >
+                        Block
+                      </button>
+                    </div>
+                  )}
+
                   <button
                     type="button"
                     onClick={() => {

@@ -1,8 +1,9 @@
 import { useState } from "react";
 
-const FriendList = (props) => {
-  const [friendRequest,setFriendRequest]=useState(false)
-  console.log(props.friends);
+const AllFriend = (props) => {
+  const [friendRequest, setFriendRequest] = useState(false);
+  console.log("all friend",props.friends)
+
   return (
     <>
       {props.friends.map((friend) => {
@@ -19,7 +20,7 @@ const FriendList = (props) => {
                   }}
                   className="btn btn-info"
                 >
-                  Add Friend
+                  Add friend
                 </button>
               </li>
             </ul>
@@ -30,4 +31,4 @@ const FriendList = (props) => {
   );
 };
 
-export default FriendList;
+export default AllFriend;

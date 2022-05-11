@@ -215,22 +215,26 @@ import { useNavigate } from "react-router-dom";
 // }
 
 const EditUser = (prop) => {
-  const [username, setUserName] = useState("");
-  const [email, setEmail] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [age, setAge] = useState(0);
-  const [gender, setGender] = useState("");
+
+  const current_user=JSON.parse(localStorage.getItem("userData"))
+  console.log(current_user)
+  const [username, setUserName] = useState(current_user.username);
+  const [email, setEmail] = useState(current_user.email);
+  const [firstName, setFirstName] = useState(current_user.first_Name);
+  const [lastName, setLastName] = useState(current_user.last_Name);
+  const [age, setAge] = useState(current_user.age);
+  const [gender, setGender] = useState(current_user.gender);
   const [userData, setUserData] = useState({});
   let navigate = useNavigate();
 
   useEffect(() => {
     setUserData(JSON.parse(localStorage.getItem("userData")));
-    console.log("userdata fkandsf", userData.email);
   }, []);
 
   const formhandler = (e) => {
     e.preventDefault();
+    // alert(username,email,firstName,lastName,age,gender)
+    // console.log(username,email,firstName,lastName,age,gender)
     const userEmail = Cookies.get("userEmail");
     const userToken = Cookies.get("authToken");
     if (age <= 0) {
@@ -245,19 +249,22 @@ const EditUser = (prop) => {
       age,
       gender,
     };
+
     const headers = {
       "X-User-Email": userEmail,
       "X-User-Token": userToken,
     };
+    // console.log(formData)
     axios
-      .patch("http://localhost:3000/edituser", user, {
+      .patch("/edituser", user, {
         headers: headers
       })
       .then((response) => {
-        console.log("edit request sent", response);
+        // console.log("edit request sent", response.data.user);
         alert("User was successfully updated");
+        localStorage.clear();
+        localStorage.setItem("userData", JSON.stringify(response.data[0]));
         navigate("/profile");
-        window.location.reload();
       })
       .catch((error) => {
         console.log("error", error);

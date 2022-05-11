@@ -2,21 +2,17 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Header from "../Layout/Header";
 import Cookies from "js-cookie";
-import FriendList from "./FriendList";
-import { useNavigate } from "react-router-dom";
+import AllFriend from "../Friends/AllFriend";
 
 const AddFriend = (props) => {
-  const [userData, setUserData] = useState({});
   const [friends, setFriends] = useState([]);
-  const [friendRequest, setFriendRequest] = useState();
-  let navigate = useNavigate();
   const current_user = JSON.parse(localStorage.getItem("userData")).id;
 
   const friendRequestHandler = (id) => {
     console.log("friend request id => ", id);
     console.log("current use id => ", current_user);
-    const userEmail=Cookies.get('userEmail')
-    const token=Cookies.get('authToken')
+    const userEmail = Cookies.get("userEmail");
+    const token = Cookies.get("authToken");
     const friend_request = {
       user_id: id,
       friend_id: current_user,
@@ -30,10 +26,11 @@ const AddFriend = (props) => {
         },
       })
       .then((res) => {
-        console.log(res)
+        console.log(res);
+        alert("Friend request Send successfully ")
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
       });
   };
 
@@ -55,10 +52,10 @@ const AddFriend = (props) => {
   return (
     <div>
       <Header image={false}></Header>
-      <FriendList
+      <AllFriend
         friends={friends}
         friendRequestHandler={friendRequestHandler}
-      ></FriendList>
+      ></AllFriend>
     </div>
   );
 };
