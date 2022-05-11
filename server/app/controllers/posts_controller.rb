@@ -24,7 +24,8 @@ class PostsController < ApplicationController
     if @post.save
       render json: @post,status: :created, location: @post
     else
-      render json: ErrorSerializer.serialize(@post.errors), status: :unprocessable_entity
+      # render json: @post.errors.full_messages, status: :unprocessable_entity
+      render json: ErrorSerializer.serialize(@post.errors.messages), status: :unprocessable_entity
     end
   end
 

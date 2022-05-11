@@ -16,7 +16,7 @@ const Comments = (props) => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
   const [editComment, setEditComment] = useState({});
-
+  const [showReply,setShowReply] = useState(false)
 
   const addNewCommentHandler = () => {
     const current_user = localStorage.getItem("userData");
@@ -37,11 +37,11 @@ const Comments = (props) => {
     axios
       .post(url, formData, { headers: headers })
       .then((response) => {
-        alert("Comment was created successfully.")
+        alert("Comment was created successfully.");
         window.location.reload();
       })
       .catch((error) => {
-        alert("There was an error creating the comment"+error.message)
+        alert("There was an error creating the comment" + error.message);
       });
   };
 
@@ -58,31 +58,42 @@ const Comments = (props) => {
 
   const showEditCommentModalHandler = (comment) => {
     setEditComment(comment);
-  }
+  };
 
   const deleteCommentHandler = (comment) => {
-     const userToken = Cookies.get("authToken");
-     const userEmail = Cookies.get("userEmail");
-     const headers = {
-       "X-User-Email": userEmail,
-       "X-User-Token": userToken,
-     };
-    let url = "http://localhost:3000/posts/"+comment.post_id+"/comments/"+comment.id;
-    axios.delete(url,{headers:headers}).then(response => {
-      alert("Comment was deleted successfully.")
-      console.log(response.data)
-      window.location.reload();
-    }).catch(error => {
-      alert("Comment could not be deleted successfully." + error.message);
-      window.location.reload();
-    });
-  }
-
+    const userToken = Cookies.get("authToken");
+    const userEmail = Cookies.get("userEmail");
+    const headers = {
+      "X-User-Email": userEmail,
+      "X-User-Token": userToken,
+    };
+    let url =
+      "http://localhost:3000/posts/" +
+      comment.post_id +
+      "/comments/" +
+      comment.id;
+    axios
+      .delete(url, { headers: headers })
+      .then((response) => {
+        alert("Comment was deleted successfully.");
+        console.log(response.data);
+        window.location.reload();
+      })
+      .catch((error) => {
+        alert("Comment could not be deleted successfully." + error.message);
+        window.location.reload();
+      });
+  };
 
   return (
-    <div>
+    <div className="container">
       {show && (
-        <EditComment show={show} setShow={setShow} editComment={editComment} userName={setCommetUserName(editComment.id)}/>
+        <EditComment
+          show={show}
+          setShow={setShow}
+          editComment={editComment}
+          userName={setCommetUserName(editComment.id)}
+        />
       )}
       <hr />
       <h3> Comments</h3>
@@ -107,8 +118,11 @@ const Comments = (props) => {
         </div>
       </div>
       {showAddComment && (
-        <div className="comment-input m-2">
-          <hr />
+        <div
+          className="comment-input m-2"
+          style={{ border: "2px solid", margin: "3px", padding: "3px" }}
+        >
+          <h5>Add a New Comment</h5>
           <Form onSubmit={addNewCommentHandler}>
             <Form.Group className="mb-3 mt-3" controlId="formBasicEmail">
               <Form.Control
@@ -131,55 +145,86 @@ const Comments = (props) => {
           </Form>
         </div>
       )}
-      <hr />
       {postComments.map((comment) => {
         return (
-          <div key={comment.id}>
-            <div className="comments m-3">
-              <div className="d-flex flex-row mb-2">
-                <img
-                  src="https://www.pinclipart.com/picdir/big/559-5594866_necktie-drawing-vector-round-avatar-user-icon-png.png"
-                  width="40"
-                  className="rounded-image"
-                />
-                <div className="f-flex flex-column m-2">
-                  <span className="name">
-                    {setCommetUserName(comment.id)} |{" "}
-                  </span>
-                  <small className="comment-text">{comment.body}</small>
-                  <div className="d-flex flex-row align-items-center status">
-                    <small>Like</small>
-                    <small>Dislike</small>
-                    <small>Reply</small>
+          <div style={{ marginBottom: "5px",marginTop: "5px"}}>
+            <div
+              key={comment.id}
+              style={{ border: "2px solid", margin: "3px" }}
+            >
+              <div className="comments m-3">
+                <div className="d-flex flex-row mb-2">
+                  <img
+                    src="https://www.pinclipart.com/picdir/big/559-5594866_necktie-drawing-vector-round-avatar-user-icon-png.png"
+                    width="40"
+                    className="rounded-image"
+                  />
+                  <div className="f-flex flex-column m-2">
+                    <span className="name">
+                      {setCommetUserName(comment.id)} |{" "}
+                    </span>
+                    <small className="comment-text">{comment.body}</small>
+                    <div className="d-flex flex-row status">
+                      <small>
+                        <Button
+                          variant="link"
+                          size="sm"
+                          style={{ marginRight: "auto", marginTop: "3px" }}
+                        >
+                          Like
+                        </Button>
+                      </small>
+                      <small>
+                        <Button
+                          variant="link"
+                          size="sm"
+                          style={{ marginLeft: "auto", marginTop: "3px" }}
+                          onClick={() => {
+                            setShowReply(!showReply);
+                          }}
+                        >
+                          Reply
+                        </Button>
+                      </small>
+                    </div>
                   </div>
                 </div>
               </div>
+              <div className="f-flex">
+                <ButtonGroup size="sm" style={{ margin: "5px" }}>
+                  <Button
+                    variant="danger"
+                    style={{ margin: "5px" }}
+                    onClick={() => {
+                      let isDelete = confirm(
+                        "Are you sure you want to delete this comment?"
+                      );
+                      if (isDelete) {
+                        deleteCommentHandler(comment);
+                      } else {
+                        window.location.reload();
+                      }
+                    }}
+                  >
+                    Delete Comment
+                  </Button>
+                  <Button
+                    variant="success"
+                    style={{ margin: "5px" }}
+                    onClick={() => {
+                      handleShow();
+                      showEditCommentModalHandler(comment);
+                    }}
+                  >
+                    Edit Comment
+                  </Button>
+                </ButtonGroup>
+              </div>
             </div>
-            <div className="f-flex">
-              <ButtonGroup size="sm" style={{ margin: "5px" }}>
-                <Button variant="danger" style={{ margin: "5px" }} onClick={() =>{
-                  let isDelete = confirm("Are you sure you want to delete this comment?");
-                  if (isDelete) {
-                    deleteCommentHandler(comment);
-                  } else {
-                    window.location.reload();
-                  }
-                }}>
-                  Delete Comment
-                </Button>
-                <Button
-                  variant="success"
-                  style={{ margin: "5px" }}
-                  onClick={() => {
-                    handleShow();
-                    showEditCommentModalHandler(comment);
-                  }}
-                >
-                  Edit Comment
-                </Button>
-              </ButtonGroup>
-            </div>
-            <hr />
+            {showReply && <div className="f-flex d-block container" id="reply" style={{ border: "2px solid", marginTop: "-3px", marginBottom: "10px", marginRight: "-10px", marginLeft: "15px" }}>
+              <h1>Reply</h1>
+            </div>}
+            <hr/>
           </div>
         );
       })}

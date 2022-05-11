@@ -41,7 +41,7 @@ const CreatePost = ({ setShowCreatePost }) => {
       })
       .catch((error) => {
         // console.log("Error in Post Request", error);
-        alert("There was some error in creating the post.");
+        alert("There was some error in creating the post.",error);
       });
   };
 

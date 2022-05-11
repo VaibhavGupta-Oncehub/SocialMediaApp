@@ -105,7 +105,7 @@ const Post = (props) => {
         />
       )}
 
-      <div className="container mt-5 mb-5 space">
+      <div className=" mt-5 mb-5 space w-100 h-100">
         <div className="row d-flex align-items-center justify-content-center ">
           <div className="col-md-6 ">
             <div className="card summary">
