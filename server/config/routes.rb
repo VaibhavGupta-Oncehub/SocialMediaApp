@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :chats
   resources :friends
   resources :friend_requests
   default_url_options :host => "localhost:3000"
@@ -15,6 +16,8 @@ Rails.application.routes.draw do
   delete '/removefriend/:id/:current_user',to: 'friends#remove_friend'
   patch '/block/:id/:current_user',to: 'friends#block'
   patch '/unblock/:id/:current_user',to: 'friends#unblock'
+  get '/messages/:id',to: 'chats#current_user_messages'
+
   devise_for :users,expect: [:update]
   # custom users routes
 

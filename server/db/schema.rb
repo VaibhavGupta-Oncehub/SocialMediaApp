@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_08_032432) do
+ActiveRecord::Schema.define(version: 2022_05_12_054107) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -31,6 +31,15 @@ ActiveRecord::Schema.define(version: 2022_05_08_032432) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "chats", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "friend_id"
+    t.string "message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_chats_on_user_id"
   end
 
   create_table "friend_requests", force: :cascade do |t|

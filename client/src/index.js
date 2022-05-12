@@ -16,8 +16,11 @@ import EditUser from "./components/UserActions/EditUser"
 import AddFriend from "./components/UserActions/AddFrind";
 import FriendRequestsLists from "./components/UserActions/FriendRequestsList";
 import FriendProfile from "./components/Friends/FriendProfile";
-
+import MessageFriendList from "./components/Friends/MessageFriendList";
+import DirectChat from "./components/Messages/DirectChat";
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
+
 root.render(
   
   <BrowserRouter>
@@ -33,6 +36,8 @@ root.render(
           <Route path="/addfriends" element={<AddFriend />} />
           <Route path="/friendrequests" element={<FriendRequestsLists />} />
           <Route path="/friendprofile" element={<FriendProfile />} />
+          <Route path="/chatwithfriend" element={<MessageFriendList />} />
+          <Route path="/directchat" element={<DirectChat />} />
           <Route path="/*" element={<NoPage />} />
         </Routes>
       </CookiesProvider>
