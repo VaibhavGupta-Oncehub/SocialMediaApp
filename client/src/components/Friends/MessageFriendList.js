@@ -5,7 +5,7 @@ import axios from "axios";
 import Header from "../Layout/Header";
 
 const MessageFriendList = (props) => {
-  const [friends, setFriends] = useState([]);
+  let [friends, setFriends] = useState([]);
   const navigate = useNavigate();
   const current_user = JSON.parse(localStorage.getItem("userData"));
 
@@ -25,6 +25,9 @@ const MessageFriendList = (props) => {
       });
   }, []);
 
+  friends = [...new Set(friends.map((a) => JSON.stringify(a)))].map((a) =>
+    JSON.parse(a)
+  );
   return (
     <div>
       <Header image={false}></Header>

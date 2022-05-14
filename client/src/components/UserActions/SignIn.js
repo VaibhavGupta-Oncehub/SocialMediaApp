@@ -23,7 +23,6 @@ const SignIn = (props) => {
             message: "User was successfully signed in",
           },
         });
-        window.location.reload();
       })
       .catch((err) => {
         navigate("/signin", {
