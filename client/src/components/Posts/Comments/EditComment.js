@@ -20,7 +20,8 @@ const EditComment = (props) => {
   const [show, setShow] = useState(false);
   let navigate = useNavigate();
 
-  const editCommentHandler = () => {
+  const editCommentHandler = (e) => {
+    e.preventDefault();
     if (isEdited) {
       const userToken = Cookies.get("authToken");
       const userEmail = Cookies.get("userEmail");
@@ -38,7 +39,8 @@ const EditComment = (props) => {
         .put(url, formData, { headers: headers })
         .then((response) => {
           alert("Comment was successfully edited.");
-          console.log(response.data);
+          // console.log(response.data);
+          window.location.reload();
         })
         .catch((err) => {
           alert("Comment failed to be edited. " + err.message);
@@ -60,7 +62,7 @@ const EditComment = (props) => {
       <Modal.Header closeButton>
         <Modal.Title>Edit Comment ✏️ </Modal.Title>
       </Modal.Header>
-      <Form autoFocus={true} onSubmit={editCommentHandler}>
+      <Form autoFocus={true} onSubmit={(e) => {editCommentHandler(e)}}>
         <Modal.Body>
           <h6>
             Commented by: <span>{userName}</span>

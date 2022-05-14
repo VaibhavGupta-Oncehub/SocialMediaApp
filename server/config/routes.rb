@@ -5,6 +5,9 @@ Rails.application.routes.draw do
 
   resources :posts do 
     get '/comments/userinfo',to: 'comments#get_comments_userInfo_for_each_post'
+    get '/postlikes',to: 'post_likes#index';
+    post '/postlikes/users/createlike/:user_id', to: 'post_likes#create';
+    delete '/postlikes/users/deletelike/:user_id', to: 'post_likes#destroy';
   
     resources :comments do
     post '/reply', to: 'comments#create_comment_reply' 
@@ -16,6 +19,7 @@ Rails.application.routes.draw do
   post '/users/sign_in', to: 'sessions#create'
   delete '/users/sign_out', to: 'sessions#destroy'
   get '/user_posts/:id', to: 'users#user_posts'
+  get '/user_posts/likes/:id', to: 'users#user_posts_likes'
   patch '/edituser',to: 'users#user_edit'
   get '/addfriend',to: 'users#friends_index'
   get '/requests/:id',to: 'friend_requests#user_friendRequests'

@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react";
 import { useLocation } from "react-router";
 import "./App.css";
@@ -26,12 +28,10 @@ const App = () => {
   let s=""
 
   useEffect(() => {
-    console.log(state)
     if (state) {
       const { messageStatus, message } = state;
       m=messageStatus
       s=message
-      console.log(m,s)
     }
   }, [state]);
   return (

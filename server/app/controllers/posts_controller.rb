@@ -24,14 +24,12 @@ class PostsController < ApplicationController
     if @post.save
       render json: @post,status: :created, location: @post
     else
-      # render json: @post.errors.full_messages, status: :unprocessable_entity
       render json: ErrorSerializer.serialize(@post.errors.messages.full_messages), status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /posts/1
   def update
-    puts("in the Update methord =================================================================")
     if @post.update(post_update_params)
       render json: @post
     else

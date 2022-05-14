@@ -100,6 +100,7 @@ class UsersController < ApplicationController
       render json: {status: false , message: 'User does not exist.'}
     end
   end
+
   def all_info_for_friend
     user=User.find_by(user_for_friend_params);
     posts=user.posts
@@ -112,6 +113,18 @@ class UsersController < ApplicationController
     friends=user.friends
     
     render json: {comments: comments_on_post, friends: friends}
+  end
+
+
+  def user_posts_likes
+    @user=User.find(user_post_params[:id]);
+    @posts= @user.posts
+    @total_likes_by_each_post=[];
+    for post in @posts
+      @total_likes_by_each_post.push({post_id: post.id, likes:post.post_likes.count})
+    end
+
+    render json: @total_likes_by_each_post
 
   end
 

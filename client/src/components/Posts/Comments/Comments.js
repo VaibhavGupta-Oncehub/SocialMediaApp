@@ -191,7 +191,7 @@ const Comments = (props) => {
                     </span>
                     <small className="comment-text">{comment.body}</small>
                     <div className="d-flex flex-row status">
-                      <small>
+                      {/* <small>
                         <Button
                           variant="link"
                           size="sm"
@@ -199,7 +199,7 @@ const Comments = (props) => {
                         >
                           Like
                         </Button>
-                      </small>
+                      </small> */}
                       <small>
                         <Button
                           variant="link"

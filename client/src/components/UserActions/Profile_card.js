@@ -23,7 +23,6 @@ const Profile_card = (props) => {
 
   const CreatePostHandler = () => {
     const current_user = localStorage.getItem("userData");
-    console.log(current_user);
     if (current_user != null) {
       setShowCreatePost(true);
     } else {

@@ -8,15 +8,20 @@ import { useState, useEffect } from "react";
 import EditPostModal from "./EditPostModal";
 import { useNavigate } from "react-router-dom";
 import Comments from "./Comments/Comments";
+import { FaThumbsDown, FaThumbsUp } from "react-icons/fa";
+import Button from "react-bootstrap/esm/Button";
+import ButtonGroup from "react-bootstrap/esm/ButtonGroup";
 
 const Post = (props) => {
   let post_id = props.id;
   const [showEditPostModal, setShowEditPostModal] = useState(false);
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
-  const [showComments, setShowComments] = useState(false);
+  const [showCommentsAndLikes, setShowCommentsAndLikes] = useState(false);
   const [postComments, setPostComments] = useState([]);
   const [commentsUsersInfo, setCommentsUsersInfo] = useState([]);
+  const [likes, setLikes] = useState([]);
+
   let navigate = useNavigate();
 
   const getPostComments = () => {
@@ -34,7 +39,7 @@ const Post = (props) => {
         setPostComments(JSON.parse(JSON.stringify(response.data)));
       })
       .catch((error) => {
-        alert("Unable to fetch all posts.")
+        alert("Unable to fetch all posts.");
       });
   };
 
@@ -53,14 +58,97 @@ const Post = (props) => {
         setCommentsUsersInfo(response.data);
       })
       .catch((error) => {
-        alert("Unable to fetch all user information for comments of this post  due to an error : " + error.message)
+        alert(
+          "Unable to fetch all user information for comments of this post  due to an error : " +
+            error.message
+        );
       });
   };
+
+  const getPostLikes = () => {
+    const userToken = Cookies.get("authToken");
+    const userEmail = Cookies.get("userEmail");
+    const headers = {
+      "X-User-Email": userEmail,
+      "X-User-Token": userToken,
+    };
+    let url = "http://localhost:3000/posts/" + post_id + "/postlikes";
+    axios
+      .get(url, { headers: headers })
+      .then((response) => {
+        // console.log(response.data);
+        setLikes(response.data);
+      })
+      .catch((error) =>
+        alert("Unable to fetch all likes due to an error: " + error.message)
+      );
+  };
+
+  const createLikeOnPostHandler = (e) => {
+    e.preventDefault();
+    const currentUser = JSON.parse(localStorage.getItem("userData"));
+    const userToken = Cookies.get("authToken");
+    const userEmail = Cookies.get("userEmail");
+    const headers = {
+      "X-User-Email": userEmail,
+      "X-User-Token": userToken,
+    };
+    let url =
+      "http://localhost:3000/posts/" +
+      post_id +
+      "/postlikes/users/createlike/" +
+      currentUser.id;
+    axios
+      .post(url, { headers: headers })
+      .then((response) => {
+        if (response.data.success === false) {
+          alert("you have already liked the post.");
+        } else {
+          alert("Liked the post successfully");
+          window.location.reload();
+        }
+        
+      })
+      .catch((error) =>
+        alert("Unable to create a like on the post: " + error.message)
+      );
+  };
+
+  const deleteLikeOnPostHandler = (e) => {
+     e.preventDefault();
+     const currentUser = JSON.parse(localStorage.getItem("userData"));
+     const userToken = Cookies.get("authToken");
+     const userEmail = Cookies.get("userEmail");
+     const headers = {
+       "X-User-Email": userEmail,
+       "X-User-Token": userToken,
+     };
+     let url =
+       "http://localhost:3000/posts/" +
+       post_id +
+       "/postlikes/users/deletelike/" +
+       currentUser.id;
+     axios
+       .delete(url, { headers: headers })
+       .then((response) => {
+         if (response.data.success === true) {
+            alert("Disliked the post successfully");
+            window.location.reload();
+         } else {
+           alert("you have already disliked the post.")
+         }
+        
+       })
+       .catch((error) =>
+         alert("Unable to dislike the post: " + error.message)
+       );
+  }
 
   useEffect(() => {
     getPostComments();
     getUserInfoOfCommentsForEachPost();
-  }, [showComments]);
+    getPostLikes();
+  }, [showCommentsAndLikes]);
 
   const DeletePostHandler = (props) => {
     let isDeleteRequested = confirm(
@@ -131,6 +219,42 @@ const Post = (props) => {
                   {props.description.toUpperCase()}
                 </strong>
               </div>
+
+              {showCommentsAndLikes && (
+                <div className="container">
+                  <div
+                    className="container text-center w-50"
+                    style={{
+                      marginBottom: "15px",
+                      textAlign: "center",
+                      border: "2px solid",
+                    }}
+                  >
+                    <strong>Total likes on post: {likes.length} </strong>
+                  </div>
+                  <ButtonGroup className="container w-25" size="sm">
+                    <Button
+                      className="container"
+                      variant="success"
+                      style={{ marginRight: "5px" }}
+                      onClick={(e) => {
+                        createLikeOnPostHandler(e);
+                      }}
+                    >
+                      <FaThumbsUp />
+                    </Button>
+                    <Button
+                      className="container"
+                      variant="danger"
+                      onClick={(e) => {
+                        deleteLikeOnPostHandler(e);
+                      }}
+                    >
+                      <FaThumbsDown />
+                    </Button>
+                  </ButtonGroup>
+                </div>
+              )}
               <div
                 className="form-check form-switch d-flex"
                 style={{ margin: "15px" }}
@@ -139,24 +263,26 @@ const Post = (props) => {
                   className="form-check-input"
                   type="checkbox"
                   id="flexSwitchCheckChecked"
-                  checked={showComments}
-                  onChange={() => setShowComments(!showComments)}
+                  checked={showCommentsAndLikes}
+                  onChange={() =>
+                    setShowCommentsAndLikes(!showCommentsAndLikes)
+                  }
                 />
                 <label
                   className="form-check-label"
                   htmlFor="flexSwitchCheckChecked"
                   style={{ marginLeft: "15px" }}
                 >
-                  Show Comments
+                  Show Comments And Likes
                 </label>
               </div>
 
-              {showComments && (
+              {showCommentsAndLikes && (
                 <Comments
                   comments={postComments}
                   commentsUsersInfo={commentsUsersInfo}
                   post_id={post_id}
-                  setShowComments={setShowComments}
+                  setShowCommentsAndLikes={setShowCommentsAndLikes}
                 />
               )}
 

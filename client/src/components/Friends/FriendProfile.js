@@ -15,6 +15,7 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
 import EditComment from "../Posts/Comments/EditComment.js";
 import Form from "react-bootstrap/Form";
 import Reply from "../Posts/Comments/Reply.js";
+import { FaThumbsDown, FaThumbsUp } from "react-icons/fa";
 
 const FriendProfile = () => {
   const [userInfo, setUserInfo] = useState({});
@@ -32,6 +33,7 @@ const FriendProfile = () => {
   const [newComment, setNewComment] = useState("");
   const [postId, setPostId] = useState(null);
   const [showAddComment, setShowAddComment] = useState(false);
+  const [likes, setLikes] = useState([]);
 
   const [currentUser, setCurrentUser] = useState(
     JSON.parse(localStorage.getItem("userData"))
@@ -69,7 +71,6 @@ const FriendProfile = () => {
   };
 
   const setCommetUserName = (comment) => {
-    
     if (comment.user_name === undefined || comment.user_name === null) {
       return "User";
     } else {
@@ -102,7 +103,82 @@ const FriendProfile = () => {
         window.location.reload();
       });
   };
+  const getPostLikes = (ID) => {
+    const userToken = Cookies.get("authToken");
+    const userEmail = Cookies.get("userEmail");
+    const headers = {
+      "X-User-Email": userEmail,
+      "X-User-Token": userToken,
+    };
+    let url = "http://localhost:3000/user_posts/likes/" + ID;
+    axios
+      .get(url, { headers: headers })
+      .then((response) => {
+        setLikes(response.data);
+      })
+      .catch((error) =>
+        alert(
+          "Unable to fetch all likes of pots on your friend profile due to an error: " +
+            error.message
+        )
+      );
+  };
+  const createLikeOnPostHandler = (e,id) => {
+    e.preventDefault();
+    const currentUser = JSON.parse(localStorage.getItem("userData"));
+    const userToken = Cookies.get("authToken");
+    const userEmail = Cookies.get("userEmail");
+    const headers = {
+      "X-User-Email": userEmail,
+      "X-User-Token": userToken,
+    };
+     console.log(postId);
+    let url =
+      "http://localhost:3000/posts/" +
+      id +
+      "/postlikes/users/createlike/" +
+      currentUser.id;
+    axios
+      .post(url, { headers: headers })
+      .then((response) => {
+        if (response.data.success === false) {
+          alert("you have already liked the post.");
+        } else {
+          alert("Liked the post successfully");
+          window.location.reload();
+        }
+      })
+      .catch((error) =>
+        alert("Unable to create a like on the post: " + error.message)
+      );
+  };
 
+  const deleteLikeOnPostHandler = (e,id) => {
+    e.preventDefault();
+    const currentUser = JSON.parse(localStorage.getItem("userData"));
+    const userToken = Cookies.get("authToken");
+    const userEmail = Cookies.get("userEmail");
+    const headers = {
+      "X-User-Email": userEmail,
+      "X-User-Token": userToken,
+    };
+    let url =
+      "http://localhost:3000/posts/" +
+      id +
+      "/postlikes/users/deletelike/" +
+      currentUser.id;
+    axios
+      .delete(url, { headers: headers })
+      .then((response) => {
+        if (response.data.success === true) {
+          alert("Disliked the post successfully");
+          window.location.reload();
+        } else {
+          alert("you have already disliked the post.");
+        }
+      })
+      .catch((error) => alert("Unable to dislike the post: " + error.message));
+  };
   useEffect(() => {
     const userToken = Cookies.get("authToken");
     const userEmail = Cookies.get("userEmail");
@@ -133,6 +209,7 @@ const FriendProfile = () => {
         console.log("Error in get All Post Request: " + error);
       });
     getFriendInfo();
+    getPostLikes(id);
   }, []);
 
   const getFriendInfo = () => {
@@ -229,6 +306,8 @@ const FriendProfile = () => {
                 replies = comments[pointer].filter((comment) => {
                   return comment.parent_comment_id !== null;
                 });
+                let totalLikes = 0;
+                totalLikes = likes[pointer].likes;
 
                 return (
                   <div
@@ -262,6 +341,42 @@ const FriendProfile = () => {
                               {post.description.toUpperCase()}
                             </strong>
                           </div>
+
+                          <div
+                            className="container text-center w-50"
+                            style={{
+                              marginBottom: "15px",
+                              textAlign: "center",
+                              border: "2px solid",
+                            }}
+                          >
+                            <strong>Total likes on post: {totalLikes} </strong>
+                          </div>
+                          <div className="container text-center">
+                            <ButtonGroup className="container w-25" size="sm">
+                              <Button
+                                className="container"
+                                variant="success"
+                                style={{ marginRight: "5px" }}
+                                onClick={(e) => {
+                                  createLikeOnPostHandler(e,post.id);
+                                }}
+                              >
+                                <FaThumbsUp />
+                              </Button>
+                              <Button
+                                className="container"
+                                variant="danger"
+                                onClick={(e) => {
+                                  setPostId(post.id);
+                                  deleteLikeOnPostHandler(e,post.id);
+                                }}
+                              >
+                                <FaThumbsDown />
+                              </Button>
+                            </ButtonGroup>
+                          </div>
+
                           <div className="container">
                             <h3 className="text-center m-3"> Comments</h3>
                             <span> ➕ </span>
@@ -336,10 +451,12 @@ const FriendProfile = () => {
                                       margin: "5px",
                                     }}
                                   >
-                                    <Card.Header>{comment.user_name}</Card.Header>
+                                    <Card.Header>
+                                      {comment.user_name}
+                                    </Card.Header>
                                     <Card.Body>{comment.body}</Card.Body>
                                     <div className="d-flex flex-row status">
-                                      <small>
+                                      {/* <small>
                                         <Button
                                           variant="link"
                                           size="sm"
@@ -350,7 +467,7 @@ const FriendProfile = () => {
                                         >
                                           Like
                                         </Button>
-                                      </small>
+                                      </small> */}
                                       <small>
                                         <Button
                                           variant="link"
@@ -429,7 +546,9 @@ const FriendProfile = () => {
                                             marginTop: "-5px",
                                           }}
                                         >
-                                          <Card.Header>{replycomment.user_name}</Card.Header>
+                                          <Card.Header>
+                                            {replycomment.user_name}
+                                          </Card.Header>
                                           <Card.Body>
                                             {replycomment.body}
                                           </Card.Body>
