@@ -244,7 +244,7 @@ const FriendProfile = () => {
           show={show}
           setShow={setShow}
           editComment={editComment}
-          userName={setCommetUserName(editComment.id)}
+          userName={currentUser.username}
         />
       )}
       {!error && (

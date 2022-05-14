@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import Header from "../Layout/Header";
 import { useNavigate } from "react-router";
+import Button from "react-bootstrap/Button"
 
 const FriendRequestsLists = (props) => {
   const [friendRequests, setFriendRequest] = useState([]);
@@ -79,7 +80,6 @@ const FriendRequestsLists = (props) => {
         },
       })
       .then((res) => {
-        console.log("the friend request", res.data);
         setFriendRequest(res.data);
       })
       .catch((err) => {
@@ -89,7 +89,18 @@ const FriendRequestsLists = (props) => {
   return (
     <>
       <Header image={false}></Header>
-      {friendRequests.length == 0 && <h1>no friends requests</h1>}
+      {friendRequests.length === 0 && (
+        <div className=" container alert-danger w-100" role="alert" style={{border: '1px solid', marginTop: '300px'}}>
+          <div
+            className="container text-center"
+            style={{padding: '10px',width: "100%"}}
+          >
+            <h1 className="display-3">OOPS!</h1>
+            <p>No Friends Request.</p>
+            <Button onClick={() => navigate("/profile")}> Go to Profile</Button>
+          </div>
+        </div>
+      )}
       {friendRequests.map((friend) => {
         return (
           <div className="container mx-5 " key={friend.requeste_id}>

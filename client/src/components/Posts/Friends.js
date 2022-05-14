@@ -147,7 +147,7 @@ const Friends = () => {
                     </div>
                   )}
                   {friend.block === 0 && (
-                    <div>
+                    <div className="btn btn-grp">
                       <button
                         type="button"
                         onClick={() => {
