@@ -7,36 +7,51 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import ButtonGroup from "react-bootstrap/esm/ButtonGroup";
 import EditComment from "./EditComment";
+import Reply from "./Reply";
+import moment from "moment";
 
 const Comments = (props) => {
-  let postComments = props.comments;
+  const loggedInUser = JSON.parse(localStorage.getItem("userData"));
+  let postComments = props.comments.filter(function (originalComment) {
+    return originalComment.parent_comment_id === null;
+  });
+  let replyComments = props.comments.filter(function (originalComment) {
+    return originalComment.parent_comment_id !== null;
+  });
+
   const commentsUsersInfo = props.commentsUsersInfo;
   const [showAddComment, setShowAddComment] = useState(false);
   const [newComment, setNewComment] = useState("");
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
   const [editComment, setEditComment] = useState({});
-  const [showReply,setShowReply] = useState(false)
 
-  const addNewCommentHandler = () => {
-    const current_user = localStorage.getItem("userData");
-    const user_id = current_user[6];
+  const [showReply, setShowReply] = useState(false);
+  const [commentTobeReplied, setCommentTobeReplied] = useState({});
+
+  const addNewCommentHandler = (e) => {
+    e.preventDefault();
+    const current_user = JSON.parse(localStorage.getItem("userData"));
+    const user_id = current_user.id;
     const userToken = Cookies.get("authToken");
     const userEmail = Cookies.get("userEmail");
+    
     const headers = {
-      "Content-Type": "multipart/form-data",
       "X-User-Email": userEmail,
       "X-User-Token": userToken,
     };
-
+    
     let formData = new FormData();
     formData.append("body", newComment);
     formData.append("user_id", user_id);
-    console.log("formData: " + formData);
+    formData.append("user_name", current_user.username);
+
+    
     let url = "http://localhost:3000/posts/" + props.post_id + "/comments";
     axios
       .post(url, formData, { headers: headers })
       .then((response) => {
+        console.log(response.data)
         alert("Comment was created successfully.");
         window.location.reload();
       })
@@ -123,7 +138,7 @@ const Comments = (props) => {
           style={{ border: "2px solid", margin: "3px", padding: "3px" }}
         >
           <h5>Add a New Comment</h5>
-          <Form onSubmit={addNewCommentHandler}>
+          <Form onSubmit={(e) => { addNewCommentHandler(e) }}>
             <Form.Group className="mb-3 mt-3" controlId="formBasicEmail">
               <Form.Control
                 type="text"
@@ -146,12 +161,23 @@ const Comments = (props) => {
         </div>
       )}
       {postComments.map((comment) => {
+        let replyCommentsForCurrentComment = replyComments.filter((reply) => {
+          return reply.parent_comment_id === comment.id;
+        });
         return (
-          <div style={{ marginBottom: "5px",marginTop: "5px"}}>
-            <div
-              key={comment.id}
-              style={{ border: "2px solid", margin: "3px" }}
-            >
+          <div
+            key={comment.id}
+            style={{ marginBottom: "5px", marginTop: "5px" }}
+          >
+            {showReply && (
+              <Reply
+                showReply={showReply}
+                setShowReply={setShowReply}
+                comment={commentTobeReplied}
+                originalUser={setCommetUserName(commentTobeReplied.id)}
+              />
+            )}
+            <div style={{ border: "2px solid", margin: "3px" }}>
               <div className="comments m-3">
                 <div className="d-flex flex-row mb-2">
                   <img
@@ -180,7 +206,8 @@ const Comments = (props) => {
                           size="sm"
                           style={{ marginLeft: "auto", marginTop: "3px" }}
                           onClick={() => {
-                            setShowReply(!showReply);
+                            setShowReply(true);
+                            setCommentTobeReplied(comment);
                           }}
                         >
                           Reply
@@ -189,42 +216,102 @@ const Comments = (props) => {
                     </div>
                   </div>
                 </div>
+                <span className="text-muted">
+                  Commented {moment(comment.updated_at).fromNow()}
+                </span>
               </div>
-              <div className="f-flex">
-                <ButtonGroup size="sm" style={{ margin: "5px" }}>
-                  <Button
-                    variant="danger"
-                    style={{ margin: "5px" }}
-                    onClick={() => {
-                      let isDelete = confirm(
-                        "Are you sure you want to delete this comment?"
-                      );
-                      if (isDelete) {
-                        deleteCommentHandler(comment);
-                      } else {
-                        window.location.reload();
-                      }
-                    }}
-                  >
-                    Delete Comment
-                  </Button>
-                  <Button
-                    variant="success"
-                    style={{ margin: "5px" }}
-                    onClick={() => {
-                      handleShow();
-                      showEditCommentModalHandler(comment);
-                    }}
-                  >
-                    Edit Comment
-                  </Button>
-                </ButtonGroup>
-              </div>
+              {loggedInUser.id === comment.user_id && (
+                <div className="f-flex">
+                  <ButtonGroup size="sm" style={{ margin: "5px" }}>
+                    <Button
+                      variant="danger"
+                      style={{ margin: "5px" }}
+                      onClick={() => {
+                        let isDelete = confirm(
+                          "Are you sure you want to delete this comment?"
+                        );
+                        if (isDelete) {
+                          deleteCommentHandler(comment);
+                        } else {
+                          window.location.reload();
+                        }
+                      }}
+                    >
+                      Delete Comment
+                    </Button>
+                    <Button
+                      variant="success"
+                      style={{ margin: "5px" }}
+                      onClick={() => {
+                        handleShow();
+                        showEditCommentModalHandler(comment);
+                      }}
+                    >
+                      Edit Comment
+                    </Button>
+                  </ButtonGroup>
+                </div>
+              )}
             </div>
-            {showReply && <div className="f-flex d-block container" id="reply" style={{ border: "2px solid", marginTop: "-3px", marginBottom: "10px", marginRight: "-10px", marginLeft: "15px" }}>
-              <h1>Reply</h1>
-            </div>}
-            <hr/>
+            {replyCommentsForCurrentComment.map((reply) => {
+              return (
+                <div
+                  key={reply.id}
+                  className="container card  w-100 h-100"
+                  style={{
+                    border: "2px solid",
+                    marginBottom: "3px",
+                    marginLeft: "25px",
+                    marginRight: "3px",
+                    marginTop: "-5px",
+                  }}
+                >
+                  <div className="card-body d-flex flex-row">
+                    <span className="name">
+                      {reply.user_name} | 
+                    </span>
+                    {reply.body}
+                  </div>
+                  <span className="text-muted">
+                    Replied {moment(reply.created_at).fromNow()}
+                  </span>
+                  {loggedInUser.id === reply.user_id && (
+                    <div className="f-flex">
+                      <ButtonGroup size="sm" style={{ margin: "5px" }}>
+                        <Button
+                          variant="danger"
+                          style={{ margin: "5px" }}
+                          onClick={() => {
+                            let isDelete = confirm(
+                              "Are you sure you want to delete this comment?"
+                            );
+                            if (isDelete) {
+                              deleteCommentHandler(reply);
+                            } else {
+                              window.location.reload();
+                            }
+                          }}
+                        >
+                          Delete Reply
+                        </Button>
+                        <Button
+                          variant="success"
+                          style={{ margin: "5px" }}
+                          onClick={() => {
+                            handleShow();
+                            showEditCommentModalHandler(reply);
+                          }}
+                        >
+                          Edit Reply
+                        </Button>
+                      </ButtonGroup>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+            {/* </div> */}
+            <hr />
           </div>
         );
       })}

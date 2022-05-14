@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useLocation } from "react-router";
 import "./App.css";
 import Header from "./components/Layout/Header";
-import Alert from "./components/UI/Alert";
+
 const isLoggedIn = () => {
   const userData = localStorage.getItem("userData");
   if (userData != null) {
@@ -28,7 +28,6 @@ const App = () => {
   useEffect(() => {
     console.log(state)
     if (state) {
-      console.log("changenig message")
       const { messageStatus, message } = state;
       m=messageStatus
       s=message
@@ -46,7 +45,8 @@ const App = () => {
           textAlign: "center",
           padding: "10px",
           width: "100%",
-          marginLeft: "100px",
+          marginLeft: "auto",
+          marginRight:"auto",
           marginTop: "20px",
         }}
       >

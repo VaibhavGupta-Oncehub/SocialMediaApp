@@ -40,7 +40,6 @@ const Post = (props) => {
 
   const getUserInfoOfCommentsForEachPost = () => {
     const userToken = Cookies.get("authToken");
-
     const userEmail = Cookies.get("userEmail");
     const headers = {
       "X-User-Email": userEmail,

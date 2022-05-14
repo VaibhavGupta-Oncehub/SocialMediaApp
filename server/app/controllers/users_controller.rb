@@ -38,35 +38,29 @@ class UsersController < ApplicationController
   # def show
   #   render json: @user
   # end
+
   def userfriend
     x=Friend.find_by(user_id: current_user.id, friend_id: params[:id])
-    puts("========")
-    puts(x.block)
     if x.block==true
-      puts("==== x bloc function === ")
       render json: { error: true, message: 'You are not authorized to see this profile'}, :status => :unauthorized and return
     end
 
     user=User.where(id: params[:id]).first
     if user==nil 
-      puts("==== user is nill === ")
-      
       render json: { error: true, message: 'User not found !'}, 
       status: 401 and return
     else 
-      puts("==== success === ")
-
       render json: user.as_json(only: [:id ,:first_name,:last_name,:username,:age,:gender, :email]),status: :created
+       
     end
   end
 
   # PATCH/PUT /user/1/
   def update
-    puts("in the update function ======================================")
     if @user.update(user_modified_params)
       render json: @user
     else
-      render json: ErrorSerializer.serialize(@user.errors), status: :unprocessable_entity
+      render json: ErrorSerializer.serialize(@user.errors.full_messages), status: :unprocessable_entity
     end
   end
 
@@ -75,7 +69,7 @@ class UsersController < ApplicationController
   #   if @user.destroy
   #    render json: {success: true , message: 'User was successfully destroyed'}
   #   else
-  #     render json: {success: false , message:"User cant be deleted/"}
+  #     render json: {success: false , message:"User cant be deleted/"=}
   # end
   # def update_info
   #   puts(" inthe update function ========================")
@@ -106,6 +100,20 @@ class UsersController < ApplicationController
       render json: {status: false , message: 'User does not exist.'}
     end
   end
+  def all_info_for_friend
+    user=User.find_by(user_for_friend_params);
+    posts=user.posts
+    comments_on_post=[];
+    comments_users=[]
+
+    for post in posts do
+      comments_on_post.push(post.comments)
+    end
+    friends=user.friends
+    
+    render json: {comments: comments_on_post, friends: friends}
+
+  end
 
   private 
   def user_params 
@@ -118,9 +126,9 @@ class UsersController < ApplicationController
   def user_modified_params
     params.permit(:id,:first_name,:last_name,:age,:gender,:username,:email,);
   end
-  # #  # Use callbacks to share common setup or constraints between actions.
-  #   def set_user
-  #     @user = User.find(params[:id])
-  #   end
+  def user_for_friend_params
+    params.permit(:id)
+  end
+
 
 end

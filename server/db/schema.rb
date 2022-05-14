@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_08_032432) do
+ActiveRecord::Schema.define(version: 2022_05_13_155901) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -40,11 +40,12 @@ ActiveRecord::Schema.define(version: 2022_05_08_032432) do
     t.integer "parent_comment_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "user_name"
+  end
+
   create_table "friend_requests", force: :cascade do |t|
     t.integer "user_id"
     t.integer "friend_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_friend_requests_on_user_id"
   end
 
@@ -84,6 +85,7 @@ ActiveRecord::Schema.define(version: 2022_05_08_032432) do
     t.string "username"
     t.integer "age"
     t.string "gender"
+    t.string "user_name"
     t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

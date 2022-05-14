@@ -64,6 +64,16 @@ class CommentsController < ApplicationController
 
   end
 
+  def create_comment_reply
+    puts("create comment reply working")
+    @comment_reply= Comment.new(create_comment_reply_params);
+    if @comment_reply.save
+      render json: @comment_reply, status: :created
+    else
+      render json: @comment_reply.errors.full_messages, status: :unprocessable_entity
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_comment
@@ -72,9 +82,12 @@ class CommentsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def comment_params
-      params.permit(:body, :post_id, :user_id, :parent_comment_id)
+      params.permit(:body, :post_id, :user_id, :parent_comment_id,:user_name)
     end
     def post_comments_params
       params.permit(:post_id) 
+    end
+    def create_comment_reply_params
+      params.permit(:user_id,:post_id, :parent_comment_id ,:body,:user_name)
     end
 end

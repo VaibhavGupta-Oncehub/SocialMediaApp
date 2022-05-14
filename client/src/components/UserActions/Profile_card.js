@@ -3,33 +3,14 @@ import CreatePost from "../Posts/CreatePost";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-var userInfo = [];
-
-const getUserInfo = () => {
-  const current_user = localStorage.getItem("userData");
-  userInfo = JSON.parse(current_user);
-};
-
-
-
 const Profile_card = (props) => {
-  
-  getUserInfo();
-  
-    // const getUserInfo = () => {
-    //   const current_user = localStorage.getItem("userData");
-    //   userInfo = JSON.parse(current_user);
-    //   console.log("current user: " + userInfo);
-    // };
+  const [currentUser, setCurrentUser] = useState({});
 
-  const [currentUser,setCurrentUser]=useState({})
-
-  useEffect(()=>{
+  useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("userData"));
-    console.log(userData)
-    setCurrentUser(userData)
-  },[])
-  // getUserInfo();
+    setCurrentUser(userData);
+  }, []);
+
   const showFriendHandler = () => {
     props.setShowFriend(!props.showFriend);
   };
@@ -95,7 +76,11 @@ const Profile_card = (props) => {
           </div>
 
           <h5 className="card-title m-3 text-center ">
-            {(currentUser.first_name + " " + currentUser.last_name).toUpperCase()}
+            {(
+              currentUser.first_name +
+              " " +
+              currentUser.last_name
+            ).toUpperCase()}
           </h5>
           <h6 className="card-subtitle mb-2 text-center">
             UserName: {currentUser.username}

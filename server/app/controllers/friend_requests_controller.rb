@@ -19,7 +19,6 @@ class FriendRequestsController < ApplicationController
     friend_requests=user.friendRequests.joins(:requestor)
     requests=[]
     for i in friend_requests
-      puts("=====================================")
       requests.append({username: i.requestor.username,requeste_id: i.id,user_id: i.requestor.id})
       # puts (i.friend.first_name)
     end 

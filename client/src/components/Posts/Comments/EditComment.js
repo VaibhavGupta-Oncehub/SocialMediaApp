@@ -4,6 +4,8 @@ import Form from "react-bootstrap/Form";
 import { useState } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
+import Alert from "react-bootstrap/Alert";
+import { useNavigate } from "react-router-dom";
 
 const EditComment = (props) => {
   const handleClose = () => props.setShow(false);
@@ -13,6 +15,10 @@ const EditComment = (props) => {
   const userName = props.userName;
   const [editedComment, setEditedComment] = useState("");
   const [isEdited, setIsEdited] = useState(false);
+  const handleClosed = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const [show, setShow] = useState(false);
+  let navigate = useNavigate();
 
   const editCommentHandler = () => {
     if (isEdited) {
@@ -38,8 +44,10 @@ const EditComment = (props) => {
           alert("Comment failed to be edited. " + err.message);
         });
     } else {
-      alert("You can't submit without editing.");
-      window.location.reload();
+      
+      alert("you cannot sumbit with editing.");
+      navigate("/profile");
+      
     }
   };
   return (

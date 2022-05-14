@@ -8,14 +8,12 @@ import Button from "../UI/Button";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Alert from "../UI/Alert";
-import Notifications from "../UserActions/Notifications";
+
 
 const Header = (props) => {
   let navigate = useNavigate();
   const [status, setStatus] = useState(true);
   const [userData, setUserData] = useState({});
-  const [friendRequests,setFriendRequest]=useState([])
   
 
   const logoutHandler = () => {
@@ -49,6 +47,7 @@ const Header = (props) => {
         setStatus(false);
       });
   };
+
 
   useEffect(() => {
     setUserData(localStorage.getItem("userData"));
@@ -119,7 +118,7 @@ const Header = (props) => {
                     </li>
                     <li>
                       <a className="dropdown-item" href="/profile">
-                        User Profile
+                        My Profile
                       </a>
                     </li>
                     <li>
@@ -171,7 +170,7 @@ const Header = (props) => {
                 placeholder="Search"
                 aria-label="Search"
               />
-              <button className={classes.button} type="submit">
+              <button className={classes.button} type="submit" onClick={ () => {}}>
                 Search
               </button>
             </form>

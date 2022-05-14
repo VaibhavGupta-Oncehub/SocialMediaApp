@@ -1,14 +1,14 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router";
 import axios from "axios";
-import FriendProfile from "../Friends/FriendProfile";
-
-const Friends = (props) => {
+let key = 0;
+const Friends = () => {
   const navigate = useNavigate();
-  const [friends, setFriends] = useState([]);
+  let [friends, setFriends] = useState([]);
   const [update, setUpdate] = useState("");
-
   useEffect(() => {
     const userEmail = Cookies.get("userEmail");
     const token = Cookies.get("authToken");
@@ -22,7 +22,6 @@ const Friends = (props) => {
       .then(function (response) {
         setFriends(response.data);
         navigate("/profile");
-        console.log("current user friends ==", response.data);
       });
   }, []);
 
@@ -60,10 +59,10 @@ const Friends = (props) => {
     navigate("/profile");
   };
 
-  const FriendProfile = (id) => {
-    console.log(id);
-    navigate("/friendprofile", { id: id });
-  };
+  // const FriendProfile = (id) => {
+  //   console.log(id);
+  //   navigate("/friendprofile", { id: id });
+  // };
 
   const blockFriend = async (id) => {
     const current_user = JSON.parse(localStorage.getItem("userData")).id;
@@ -82,10 +81,12 @@ const Friends = (props) => {
         }
       )
       .then((response) => {
+        alert("User was successfully blocked.");
         window.location.reload(false);
 
       })
       .catch((error) => {
+        alert("An error occurred while blocking the user."+ error.message)
       });
   };
   const unblockFriend = async (id) => {
@@ -105,25 +106,34 @@ const Friends = (props) => {
         }
       )
       .then((response) => {
+        alert("User was successfully unblocked.");
+
         window.location.reload(false);
       })
       .catch((error) => {
         // Code
+        alert(
+          "An error occurred while unblocking the user." + error.message
+        );
+
       });
   };
 
+  friends = [...new Set(friends.map((a) => JSON.stringify(a)))].map((a) =>
+    JSON.parse(a)
+  );
   return (
     <>
       {friends.map((friend) => {
+        
         return (
-          <div className="container mx-5 " key={friend.id}>
+          <div className="container mx-5 " key={key++}>
             <ul className="list-group m-1">
               {update}
               <li className="list-group-item d-flex justify-content-between align-items-center">
                 {friend.first_name}
-                {friend.id}
                 <div>
-                  {friend.block == 1 && (
+                  {friend.block === 1 && (
                     <div>
                       <button
                         type="button"
@@ -136,7 +146,7 @@ const Friends = (props) => {
                       </button>
                     </div>
                   )}
-                  {friend.block == 0 && (
+                  {friend.block === 0 && (
                     <div>
                       <button
                         type="button"

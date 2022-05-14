@@ -28,8 +28,8 @@ const PostForm = (props) => {
   }
   return (
     <div className="">
-      <div class="card container my-5 bg-info bg-opacity-25 ">
-        <h5 class="card-header bg-info d-flex justify-content-center text-white">create post</h5>
+      <div className="card container my-5 bg-info bg-opacity-25 ">
+        <h5 className="card-header bg-info d-flex justify-content-center text-white">create post</h5>
         <div className="container">
           <form onSubmit={formhandler}>
             <div className="mb-3 m-2">

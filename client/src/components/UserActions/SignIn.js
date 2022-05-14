@@ -1,14 +1,12 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
 import Alert from "../UI/Alert";
-const SignIn = (props) => {
+const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { state } = useLocation();
-  const [userData, setUserData] = useState({});
   const { messageStatus, message } = state;
   let navigate = useNavigate();
   const formhandler = (e) => {
