@@ -64,9 +64,7 @@ const Header = (props) => {
       setStatus(false);
     }
   }, [status]);
-
   
-
   return (
     <Fragment>
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary  ">
@@ -129,6 +127,11 @@ const Header = (props) => {
                     <li>
                       <a className="dropdown-item" href="/friendrequests">
                         Friend requests
+                      </a>
+                    </li>
+                    <li>
+                      <a className="dropdown-item" href="/chatwithfriend">
+                        Chat with friend
                       </a>
                     </li>
                   </ul>

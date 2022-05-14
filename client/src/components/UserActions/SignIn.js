@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
@@ -23,7 +23,6 @@ const SignIn = () => {
             message: "User was successfully signed in",
           },
         });
-        window.location.reload();
       })
       .catch((err) => {
         navigate("/signin", {

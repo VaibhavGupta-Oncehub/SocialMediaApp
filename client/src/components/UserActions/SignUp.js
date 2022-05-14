@@ -202,10 +202,14 @@ const SignUp = (props) => {
         <h4>Already have an account?</h4>
         <button
           className="btn btn-primary btn-lg"
-          onClick={() => navigate("/signin")}
+          onClick={() => navigate("/signin", {
+            state: {
+              messageStatus: "Success",
+              message: "Please Login First  !!!!!!!!!!!!",
+            }
+          })}
           style={{ margin: "15px" }}
         >
-          {" "}
           Sign In
         </button>
       </div>

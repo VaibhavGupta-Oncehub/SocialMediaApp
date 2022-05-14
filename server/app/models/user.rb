@@ -3,6 +3,7 @@ class User < ApplicationRecord
   acts_as_token_authenticatable
   has_many :friendRequests
   has_many :friends
+  has_many :chats
   has_many :friend_requests_as_requestor, class_name: "FriendRequest", foreign_key: "friend_id"
   has_many :friend_as_requestor, class_name: "Friends", foreign_key: "friend_id"
   has_many :post_likes, dependent: :destroy
