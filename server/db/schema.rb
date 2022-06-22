@@ -33,11 +33,6 @@ ActiveRecord::Schema.define(version: 2022_05_14_070924) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-<<<<<<< HEAD
-  create_table "comments", force: :cascade do |t|
-    t.text "body"
-    t.integer "post_id"
-=======
   create_table "chats", force: :cascade do |t|
     t.integer "user_id"
     t.integer "friend_id"
@@ -47,8 +42,9 @@ ActiveRecord::Schema.define(version: 2022_05_14_070924) do
     t.index ["user_id"], name: "index_chats_on_user_id"
   end
 
-  create_table "friend_requests", force: :cascade do |t|
->>>>>>> 6972d59084ab70b22dc2c3c2d9f3f79a4a443770
+  create_table "comments", force: :cascade do |t|
+    t.text "body"
+    t.integer "post_id"
     t.integer "user_id"
     t.integer "parent_comment_id"
     t.datetime "created_at", null: false
