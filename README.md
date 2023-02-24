@@ -41,7 +41,7 @@ Users can block/remove their existing friends.When a friend is blocked then the 
    https://user-images.githubusercontent.com/98082102/175024573-ab9e0fa5-d6d4-4a9c-b424-e97ccb229128.mp4
    
  5. Chat with your friends:
-A user can chat with his/her friends. This functionality was implemented without using webhooks so users have to refresh the page each time when they receive a message from another user. This is demonstrated below:
+A user can chat with his/her friends. This functionality was implemented without using any real-time communication socket so users have to refresh the page each time when they receive a message from another user. This is demonstrated below:
     
    https://user-images.githubusercontent.com/98082102/175026398-15256dd6-f94b-4cc5-987f-05f1a1874b81.mp4
 
